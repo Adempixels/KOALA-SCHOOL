@@ -553,14 +553,7 @@
         <button class="solid-btn" style="width:100%; margin-top:16px;" onclick="login()">Se connecter</button>
         <div class="notice" id="loginNotice"></div>
 
-        <div class="login-info">
-          <strong>Comptes de départ :</strong><br>
-          Élèves : <strong>isaac</strong>, <strong>souleymane</strong>, <strong>assai</strong>, <strong>mohamedamine</strong>, <strong>ahmedbachir</strong>, <strong>abdelrahman</strong> / mot de passe : <strong>1234</strong><br>
-          Professeur : <strong>sahraoui / 1234</strong><br>
-          Direction : <strong>direction / 1234</strong><br>
-          Parents : ils peuvent être créés depuis le compte direction.
         </div>
-      </div>
     </div>
   </section>
 
@@ -619,9 +612,26 @@
 
   <div class="footer-note">Base complète enregistrée avec une version de stockage locale pour éviter les anciens blocages.</div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script>
     const STORAGE_KEY = 'koalaSchoolUltraComplete';
     const STORAGE_VERSION = 3;
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAp2gHq6sX_DnlUSwZ2JoyCf_e6gxxJKU4",
+      authDomain: "koala-school.firebaseapp.com",
+      databaseURL: "https://koala-school-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "koala-school",
+      storageBucket: "koala-school.firebasestorage.app",
+      messagingSenderId: "995555659297",
+      appId: "1:995555659297:web:10c3a0b3ef5d89d57b9d60",
+      measurementId: "G-48YDFH8BZN"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let firebaseReady = false;
 
     const DEFAULT_STATE = {
       __version: STORAGE_VERSION,
@@ -652,7 +662,7 @@
       announcements: []
     };
 
-    let state = loadState();
+    let state = deepCopy(DEFAULT_STATE);
     let currentUser = null;
 
     function deepCopy(obj) {
@@ -660,24 +670,57 @@
     }
 
     function loadState() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        try {
-          const parsed = JSON.parse(raw);
-          if (parsed && parsed.__version === STORAGE_VERSION) {
-            return parsed;
+      return deepCopy(DEFAULT_STATE);
+    }
+
+    function initializeFirebaseSync() {
+      const ref = db.ref('schoolState');
+
+      ref.once('value').then(snapshot => {
+        if (snapshot.exists()) {
+          const remoteState = snapshot.val();
+          if (remoteState && remoteState.__version === STORAGE_VERSION) {
+            state = remoteState;
+          } else {
+            state = deepCopy(DEFAULT_STATE);
+            ref.set(state);
           }
-        } catch (e) {}
-      }
-      const fresh = deepCopy(DEFAULT_STATE);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
-      return fresh;
+        } else {
+          state = deepCopy(DEFAULT_STATE);
+          ref.set(state);
+        }
+        firebaseReady = true;
+        refreshGlobalStats();
+        if (currentUser) {
+          const refreshedUser = state.users.find(u => u.login === currentUser.login && u.role === currentUser.role);
+          if (refreshedUser) currentUser = refreshedUser;
+          renderAllViews();
+        }
+      }).catch(() => {
+        state = deepCopy(DEFAULT_STATE);
+        refreshGlobalStats();
+      });
+
+      ref.on('value', snapshot => {
+        if (!snapshot.exists()) return;
+        const remoteState = snapshot.val();
+        if (!remoteState) return;
+        state = remoteState;
+        refreshGlobalStats();
+        if (currentUser) {
+          const refreshedUser = state.users.find(u => u.login === currentUser.login && u.role === currentUser.role);
+          if (refreshedUser) currentUser = refreshedUser;
+          renderAllViews();
+        }
+      });
     }
 
     function saveState() {
       state.__version = STORAGE_VERSION;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       refreshGlobalStats();
+      if (firebaseReady) {
+        db.ref('schoolState').set(state);
+      }
     }
 
     function nextId(listName) {
@@ -950,10 +993,10 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Élève</th><th>Matière</th><th>Note</th><th>Coefficient</th><th>Professeur</th><th>Date</th><th>Commentaire</th></tr>
+              <tr><th>Élève</th><th>Évaluation</th><th>Matière</th><th>Note</th><th>Coefficient</th><th>Professeur</th><th>Date</th><th>Commentaire</th>${currentUser.role === 'prof' ? '<th>Actions</th>' : ''}</tr>
             </thead>
             <tbody>
-              ${notes.map(n => `<tr><td>${studentName(n.studentLogin)}</td><td>${n.subject}</td><td><strong>${n.value}/${n.outOf}</strong></td><td>${n.coefficient}</td><td>${n.teacher}</td><td>${n.date}</td><td>${n.comment || '—'}</td></tr>`).join('') || '<tr><td colspan="7">Aucune note enregistrée.</td></tr>'}
+              ${notes.map(n => `<tr><td>${studentName(n.studentLogin)}</td><td>${n.evaluationTitle || 'Évaluation'}</td><td>${n.subject}</td><td><strong>${n.value}/${n.outOf}</strong></td><td>${n.coefficient}</td><td>${n.teacher}</td><td>${n.date}</td><td>${n.comment || '—'}</td>${currentUser.role === 'prof' ? `<td><div class="actions-inline"><button class="light-btn" onclick="editNotePrompt(${n.id})">Modifier</button><button class="danger-btn" onclick="deleteNote(${n.id})">Supprimer</button></div></td>` : ''}</tr>`).join('') || `<tr><td colspan="${currentUser.role === 'prof' ? 9 : 8}">Aucune note enregistrée.</td></tr>`}
             </tbody>
           </table>
         </div>
@@ -1231,24 +1274,31 @@
         <div class="panel-header">
           <div>
             <h2 class="panel-title">Saisie pédagogique</h2>
-            <div class="panel-subtitle">Ajoute notes, devoirs, présences, annonces et documents pour le groupe.</div>
+            <div class="panel-subtitle">Crée une évaluation pour toute la classe, puis saisis une note pour chaque élève.</div>
           </div>
         </div>
 
         <div class="card-grid">
           <div class="small-card">
-            <h3>Ajouter une note</h3>
-            <div class="form-grid-3">
-              <div><label class="field-label">Élève</label><select class="select" id="teachStudentLogin">${students.map(s => `<option value="${s.login}">${s.name} (${s.login})</option>`).join('')}</select></div>
-              <div><label class="field-label">Matière</label><input class="field" id="teachSubject" value="${currentUser.subject}" /></div>
-              <div><label class="field-label">Date</label><input class="field" id="teachNoteDate" type="date" value="${new Date().toISOString().slice(0, 10)}" /></div>
-              <div><label class="field-label">Note</label><input class="field" id="teachValue" type="number" value="14" /></div>
-              <div><label class="field-label">Sur</label><input class="field" id="teachOutOf" type="number" value="20" /></div>
-              <div><label class="field-label">Coefficient</label><input class="field" id="teachCoef" type="number" value="1" /></div>
+            <h3>Créer une évaluation pour tout le groupe</h3>
+            <div class="form-grid-4">
+              <div><label class="field-label">Titre</label><input class="field" id="evalTitle" placeholder="Ex : Contrôle 1" /></div>
+              <div><label class="field-label">Matière</label><input class="field" id="evalSubject" value="${currentUser.subject}" /></div>
+              <div><label class="field-label">Date</label><input class="field" id="evalDate" type="date" value="${new Date().toISOString().slice(0, 10)}" /></div>
+              <div><label class="field-label">Sur</label><input class="field" id="evalOutOf" type="number" value="20" /></div>
+              <div><label class="field-label">Coefficient</label><input class="field" id="evalCoef" type="number" value="1" /></div>
             </div>
-            <label class="field-label">Commentaire</label>
-            <textarea class="textarea" id="teachComment" placeholder="Commentaire sur la note"></textarea>
-            <button class="solid-btn" onclick="teacherAddNote()">Ajouter la note</button>
+            <label class="field-label">Commentaire général</label>
+            <textarea class="textarea" id="evalComment" placeholder="Commentaire général sur l'évaluation"></textarea>
+            <div class="table-wrap" style="margin-top:12px;">
+              <table>
+                <thead><tr><th>Élève</th><th>Note</th></tr></thead>
+                <tbody>
+                  ${students.map(s => `<tr><td>${s.name}</td><td><input class="field" type="number" id="score_${s.login}" placeholder="/20" /></td></tr>`).join('')}
+                </tbody>
+              </table>
+            </div>
+            <div class="actions-inline" style="margin-top:12px;"><button class="solid-btn" onclick="teacherCreateEvaluation()">Créer l'évaluation</button></div>
             <div class="notice" id="teacherNotice"></div>
           </div>
 
@@ -1294,7 +1344,7 @@
           <div class="small-card">
             <h3>Dernières notes saisies</h3>
             <div class="section-list">
-              ${noteRows.map(n => `<div class="row-item"><div class="row-left"><strong>${studentName(n.studentLogin)} — ${n.subject}</strong><span>${n.date} • ${n.comment || 'Sans commentaire'}</span></div><div class="badge blue">${n.value}/${n.outOf}</div></div>`).join('') || '<div class="empty-state">Aucune note.</div>'}
+              ${noteRows.map(n => `<div class="row-item"><div class="row-left"><strong>${studentName(n.studentLogin)} — ${n.evaluationTitle || n.subject}</strong><span>${n.date} • ${n.comment || 'Sans commentaire'}</span></div><div class="actions-inline"><span class="badge blue">${n.value}/${n.outOf}</span><button class="light-btn" onclick="editNotePrompt(${n.id})">Modifier</button></div></div>`).join('') || '<div class="empty-state">Aucune note.</div>'}
             </div>
           </div>
           <div class="small-card">
@@ -1309,25 +1359,79 @@
       `;
     }
 
-    function teacherAddNote() {
+    function teacherCreateEvaluation() {
       clearNotice('teacherNotice');
-      const studentLogin = document.getElementById('teachStudentLogin').value;
-      const subject = document.getElementById('teachSubject').value.trim();
-      const date = document.getElementById('teachNoteDate').value;
-      const value = Number(document.getElementById('teachValue').value);
-      const outOf = Number(document.getElementById('teachOutOf').value);
-      const coefficient = Number(document.getElementById('teachCoef').value);
-      const comment = document.getElementById('teachComment').value.trim();
-      if (!studentLogin || !subject || !date || !value || !outOf || !coefficient) {
-        showNotice('teacherNotice', 'error', 'Remplis tous les champs de la note.');
+      const students = getStudents().filter(s => s.className === getClassNameForCurrent());
+      const evaluationTitle = document.getElementById('evalTitle').value.trim();
+      const subject = document.getElementById('evalSubject').value.trim();
+      const date = document.getElementById('evalDate').value;
+      const outOf = Number(document.getElementById('evalOutOf').value);
+      const coefficient = Number(document.getElementById('evalCoef').value);
+      const comment = document.getElementById('evalComment').value.trim();
+
+      if (!evaluationTitle || !subject || !date || !outOf || !coefficient) {
+        showNotice('teacherNotice', 'error', 'Remplis les informations générales de l’évaluation.');
         return;
       }
-      state.notes.push({ id: nextId('notes'), studentLogin, subject, value, outOf, coefficient, teacher: currentUser.name, date, comment });
+
+      let added = 0;
+      students.forEach(student => {
+        const input = document.getElementById('score_' + student.login);
+        const raw = input ? input.value.trim() : '';
+        if (raw === '') return;
+        const value = Number(raw);
+        if (Number.isNaN(value)) return;
+        state.notes.push({
+          id: nextId('notes'),
+          studentLogin: student.login,
+          evaluationTitle,
+          subject,
+          value,
+          outOf,
+          coefficient,
+          teacher: currentUser.name,
+          date,
+          comment
+        });
+        added += 1;
+      });
+
+      if (!added) {
+        showNotice('teacherNotice', 'error', 'Ajoute au moins une note dans le tableau.');
+        return;
+      }
+
       saveState();
       renderTeaching();
       renderNotes();
       renderDashboard();
-      showNotice('teacherNotice', 'success', 'Note ajoutée avec succès.');
+      showNotice('teacherNotice', 'success', 'Évaluation créée pour ' + added + ' élève(s).');
+    }
+
+    function editNotePrompt(id) {
+      if (!currentUser || currentUser.role !== 'prof') return;
+      const note = state.notes.find(n => n.id === id);
+      if (!note) return;
+      const newValue = prompt('Nouvelle note pour ' + studentName(note.studentLogin) + ' :', note.value);
+      if (newValue === null) return;
+      const parsed = Number(newValue);
+      if (Number.isNaN(parsed)) return;
+      const newComment = prompt('Nouveau commentaire :', note.comment || '') ?? note.comment;
+      note.value = parsed;
+      note.comment = newComment;
+      saveState();
+      renderTeaching();
+      renderNotes();
+      renderDashboard();
+    }
+
+    function deleteNote(id) {
+      if (!currentUser || currentUser.role !== 'prof') return;
+      state.notes = state.notes.filter(n => n.id !== id);
+      saveState();
+      renderTeaching();
+      renderNotes();
+      renderDashboard();
     }
 
     function teacherAddHomework() {
@@ -1619,7 +1723,12 @@
 
     selectRole('eleve');
     refreshGlobalStats();
+    initializeFirebaseSync();
   </script>
 </body>
 </html>
+
+
+
+
 
