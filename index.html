@@ -3,487 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Koala School - Portail scolaire complet</title>
+  <title>Koala School</title>
   <style>
     :root {
-      --bg: #edf4fb;
-      --panel: #ffffff;
-      --line: #dce7f1;
-      --text: #20364b;
-      --muted: #6c8298;
-      --blue: #0f67b1;
-      --blue2: #1976c9;
-      --blue-soft: #e8f3fd;
-      --green: #20884d;
-      --green-soft: #e8f8ee;
-      --orange: #a86800;
-      --orange-soft: #fff3e3;
-      --red: #bb2d1a;
-      --red-soft: #feecea;
-      --shadow: 0 12px 28px rgba(20, 52, 80, 0.08);
-      --radius: 18px;
+      --bg:#edf4fb;
+      --panel:#ffffff;
+      --line:#dce7f1;
+      --text:#20364b;
+      --muted:#6c8298;
+      --blue:#0f67b1;
+      --blue2:#1976c9;
+      --blue-soft:#e8f3fd;
+      --green:#20884d;
+      --green-soft:#e8f8ee;
+      --orange:#a86800;
+      --orange-soft:#fff3e3;
+      --red:#bb2d1a;
+      --red-soft:#feecea;
+      --shadow:0 12px 28px rgba(20,52,80,.08);
     }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    button, input, select, textarea {
-      font: inherit;
-    }
-
-    .hidden { display: none !important; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; background:var(--bg); color:var(--text); }
+    button,input,select,textarea { font:inherit; }
+    .hidden { display:none !important; }
 
     .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: linear-gradient(90deg, var(--blue), var(--blue2));
-      color: white;
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-      gap: 14px;
-      flex-wrap: wrap;
+      position:sticky; top:0; z-index:50;
+      background:linear-gradient(90deg,var(--blue),var(--blue2)); color:#fff;
+      padding:14px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+      box-shadow:0 2px 10px rgba(0,0,0,.12);
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 22px;
-      font-weight: 800;
-    }
-
+    .brand { display:flex; align-items:center; gap:12px; font-size:22px; font-weight:800; }
     .brand-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: white;
-      color: var(--blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
+      width:46px; height:46px; border-radius:14px; background:#fff; color:var(--blue);
+      display:flex; align-items:center; justify-content:center; font-weight:900;
     }
+    .top-actions { display:flex; gap:10px; flex-wrap:wrap; }
 
-    .top-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
+    .ghost-btn,.solid-btn,.light-btn,.danger-btn {
+      border:none; border-radius:12px; padding:11px 14px; font-weight:700; cursor:pointer;
     }
-
-    .ghost-btn, .solid-btn, .light-btn, .danger-btn {
-      border: none;
-      border-radius: 12px;
-      padding: 11px 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .ghost-btn {
-      background: rgba(255,255,255,0.14);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    .solid-btn {
-      background: var(--blue);
-      color: white;
-    }
-
-    .light-btn {
-      background: #edf5fd;
-      color: var(--blue);
-    }
-
-    .danger-btn {
-      background: #c62828;
-      color: white;
-    }
+    .ghost-btn { background:rgba(255,255,255,.14); color:#fff; border:1px solid rgba(255,255,255,.25); }
+    .solid-btn { background:var(--blue); color:#fff; }
+    .light-btn { background:#edf5fd; color:var(--blue); }
+    .danger-btn { background:#c62828; color:#fff; }
 
     .landing {
-      padding: 32px 20px 22px;
-      background: linear-gradient(135deg, var(--blue2), var(--blue));
-      color: white;
+      padding:32px 20px 22px; background:linear-gradient(135deg,var(--blue2),var(--blue)); color:#fff;
     }
-
     .landing-inner {
-      max-width: 1380px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 22px;
-      align-items: stretch;
+      max-width:1380px; margin:0 auto; display:grid; grid-template-columns:1.2fr .8fr; gap:22px;
     }
-
-    .hero-card, .login-card {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 24px;
-      padding: 24px;
-      backdrop-filter: blur(8px);
+    .hero-card,.login-card {
+      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:24px; padding:24px;
+      backdrop-filter:blur(8px);
     }
-
-    .hero-card h1 {
-      margin: 0 0 12px;
-      font-size: 40px;
-      line-height: 1.15;
-    }
-
-    .hero-card p {
-      margin: 0;
-      line-height: 1.65;
-      max-width: 780px;
-    }
-
-    .role-grid {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-
+    .hero-card h1 { margin:0 0 12px; font-size:40px; line-height:1.15; }
+    .hero-card p { margin:0; line-height:1.65; max-width:780px; }
+    .role-grid { margin-top:22px; display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
     .role-card {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 18px;
-      padding: 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: .18s ease;
+      background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:16px;
+      text-align:center; cursor:pointer; transition:.18s ease;
     }
+    .role-card:hover,.role-card.active { background:rgba(255,255,255,.26); transform:translateY(-2px); }
+    .role-icon { font-size:28px; margin-bottom:8px; }
+    .role-title { font-weight:800; margin-bottom:4px; }
+    .role-desc { font-size:13px; line-height:1.45; opacity:.95; }
 
-    .role-card:hover, .role-card.active {
-      background: rgba(255,255,255,0.26);
-      transform: translateY(-2px);
+    .field-label { display:block; font-size:14px; font-weight:700; margin:10px 0 7px; }
+    .field,.textarea,.select {
+      width:100%; border:none; outline:none; border-radius:14px; padding:13px 14px; background:#fff; color:var(--text);
     }
+    .textarea { min-height:110px; resize:vertical; }
 
-    .role-icon { font-size: 28px; margin-bottom: 8px; }
-    .role-title { font-weight: 800; margin-bottom: 4px; }
-    .role-desc { font-size: 13px; line-height: 1.45; opacity: 0.95; }
-
-    .field-label {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-      margin: 10px 0 7px;
-    }
-
-    .field, .textarea, .select {
-      width: 100%;
-      border: none;
-      outline: none;
-      border-radius: 14px;
-      padding: 13px 14px;
-      background: white;
-      color: var(--text);
-    }
-
-    .textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .notice {
-      display: none;
-      margin-top: 12px;
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-weight: 700;
-    }
-
-    .notice.show { display: block; }
-    .notice.success { background: var(--green-soft); color: var(--green); }
-    .notice.error { background: var(--red-soft); color: var(--red); }
-    .notice.info { background: var(--blue-soft); color: var(--blue); }
-
-    .login-info {
-      margin-top: 14px;
-      background: rgba(255,255,255,0.13);
-      border: 1px solid rgba(255,255,255,0.18);
-      padding: 14px;
-      border-radius: 16px;
-      font-size: 13px;
-      line-height: 1.55;
-    }
+    .notice { display:none; margin-top:12px; border-radius:14px; padding:12px 14px; font-weight:700; }
+    .notice.show { display:block; }
+    .notice.success { background:var(--green-soft); color:var(--green); }
+    .notice.error { background:var(--red-soft); color:var(--red); }
+    .notice.info { background:var(--blue-soft); color:var(--blue); }
 
     .stats {
-      max-width: 1380px;
-      margin: 20px auto 0;
-      padding: 0 20px 10px;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 14px;
+      max-width:1380px; margin:20px auto 0; padding:0 20px 10px; display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
     }
-
-    .stat-card, .panel, .sidebar, .kpi, .small-card, .info-list-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      border-radius: 20px;
+    .stat-card,.panel,.sidebar,.kpi,.small-card,.info-list-card {
+      background:var(--panel); border:1px solid var(--line); box-shadow:var(--shadow); border-radius:20px;
     }
+    .stat-card { padding:16px; }
+    .stat-title { color:var(--muted); font-size:13px; text-transform:uppercase; letter-spacing:.4px; margin-bottom:10px; }
+    .stat-value { font-size:28px; font-weight:800; color:#123c62; }
 
-    .stat-card {
-      padding: 16px;
-    }
-
-    .stat-title {
-      color: var(--muted);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-      margin-bottom: 10px;
-    }
-
-    .stat-value {
-      font-size: 28px;
-      font-weight: 800;
-      color: #123c62;
-    }
-
-    .app-shell {
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 18px 20px 34px;
-    }
-
-    .workspace {
-      display: none;
-      grid-template-columns: 285px 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .workspace.show { display: grid; }
-
-    .sidebar {
-      padding: 18px;
-      position: sticky;
-      top: 80px;
-    }
-
-    .user-block {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 14px;
-    }
-
+    .app-shell { max-width:1380px; margin:0 auto; padding:18px 20px 34px; }
+    .workspace { display:none; grid-template-columns:285px 1fr; gap:20px; align-items:start; }
+    .workspace.show { display:grid; }
+    .sidebar { padding:18px; position:sticky; top:80px; }
+    .user-block { display:flex; align-items:center; gap:12px; padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:14px; }
     .avatar {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: var(--blue-soft);
-      color: var(--blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: 900;
-      flex-shrink: 0;
+      width:58px; height:58px; border-radius:50%; background:var(--blue-soft); color:var(--blue);
+      display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900;
     }
-
-    .user-name { font-weight: 800; margin-bottom: 3px; }
-    .user-role { color: var(--muted); font-size: 14px; }
-
-    .menu-title {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .45px;
-      margin: 14px 0 8px;
-      padding-left: 4px;
-    }
-
+    .user-name { font-weight:800; margin-bottom:3px; }
+    .user-role { color:var(--muted); font-size:14px; }
+    .menu-title { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.45px; margin:14px 0 8px; padding-left:4px; }
     .menu-btn {
-      width: 100%;
-      text-align: left;
-      border: none;
-      background: transparent;
-      color: #26415d;
-      padding: 12px 13px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 6px;
+      width:100%; text-align:left; border:none; background:transparent; color:#26415d; padding:12px 13px; border-radius:14px;
+      font-weight:700; cursor:pointer; margin-bottom:6px;
     }
+    .menu-btn:hover,.menu-btn.active { background:var(--blue-soft); color:var(--blue); }
 
-    .menu-btn:hover, .menu-btn.active {
-      background: var(--blue-soft);
-      color: var(--blue);
-    }
+    .main { display:grid; gap:18px; }
+    .panel { padding:20px; }
+    .panel-header { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+    .panel-title { margin:0; font-size:25px; color:#123a60; font-weight:800; }
+    .panel-subtitle { color:var(--muted); margin-top:5px; line-height:1.55; }
 
-    .main { display: grid; gap: 18px; }
+    .kpi-grid,.card-grid,.form-grid-2,.form-grid-3,.form-grid-4 { display:grid; gap:16px; }
+    .kpi-grid { grid-template-columns:repeat(4,1fr); }
+    .card-grid { grid-template-columns:repeat(2,1fr); }
+    .form-grid-2 { grid-template-columns:repeat(2,1fr); }
+    .form-grid-3 { grid-template-columns:repeat(3,1fr); }
+    .form-grid-4 { grid-template-columns:repeat(4,1fr); }
+    .kpi,.small-card,.info-list-card { padding:16px; }
+    .kpi-label { color:var(--muted); font-size:13px; text-transform:uppercase; letter-spacing:.35px; margin-bottom:8px; }
+    .kpi-value { font-size:30px; font-weight:800; color:#123c62; }
 
-    .panel { padding: 20px; }
-
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .panel-title {
-      margin: 0;
-      font-size: 25px;
-      color: #123a60;
-      font-weight: 800;
-    }
-
-    .panel-subtitle {
-      color: var(--muted);
-      margin-top: 5px;
-      line-height: 1.55;
-    }
-
-    .kpi-grid, .card-grid, .mini-grid, .form-grid-2, .form-grid-3, .form-grid-4 {
-      display: grid;
-      gap: 16px;
-    }
-
-    .kpi-grid { grid-template-columns: repeat(4, 1fr); }
-    .card-grid { grid-template-columns: repeat(2, 1fr); }
-    .mini-grid { grid-template-columns: repeat(3, 1fr); }
-    .form-grid-2 { grid-template-columns: repeat(2, 1fr); }
-    .form-grid-3 { grid-template-columns: repeat(3, 1fr); }
-    .form-grid-4 { grid-template-columns: repeat(4, 1fr); }
-
-    .kpi, .small-card, .info-list-card { padding: 16px; }
-
-    .kpi-label {
-      color: var(--muted);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .35px;
-      margin-bottom: 8px;
-    }
-
-    .kpi-value {
-      font-size: 30px;
-      font-weight: 800;
-      color: #123c62;
-    }
-
-    .section-list { display: grid; gap: 10px; }
-
+    .section-list { display:grid; gap:10px; }
     .row-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 13px 14px;
-      background: #fcfeff;
+      display:flex; justify-content:space-between; align-items:center; gap:12px; border:1px solid var(--line);
+      border-radius:16px; padding:13px 14px; background:#fcfeff;
     }
-
-    .row-left strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .row-left span {
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .row-left strong { display:block; margin-bottom:4px; }
+    .row-left span { color:var(--muted); font-size:14px; }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 800;
-      white-space: nowrap;
+      display:inline-flex; align-items:center; justify-content:center; border-radius:999px; padding:8px 12px;
+      font-size:13px; font-weight:800; white-space:nowrap;
     }
+    .badge.blue { background:var(--blue-soft); color:var(--blue); }
+    .badge.green { background:var(--green-soft); color:var(--green); }
+    .badge.orange { background:var(--orange-soft); color:var(--orange); }
+    .badge.red { background:var(--red-soft); color:var(--red); }
 
-    .badge.blue { background: var(--blue-soft); color: var(--blue); }
-    .badge.green { background: var(--green-soft); color: var(--green); }
-    .badge.orange { background: var(--orange-soft); color: var(--orange); }
-    .badge.red { background: var(--red-soft); color: var(--red); }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-
-    thead { background: #f3f8fd; }
-
-    th, td {
-      text-align: left;
-      padding: 13px 14px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: top;
-      font-size: 14px;
-    }
-
-    th {
-      color: #35526e;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .35px;
-    }
-
-    .actions-inline {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
+    .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:18px; }
+    table { width:100%; border-collapse:collapse; background:#fff; }
+    thead { background:#f3f8fd; }
+    th,td { text-align:left; padding:13px 14px; border-bottom:1px solid var(--line); vertical-align:top; font-size:14px; }
+    th { color:#35526e; font-size:13px; text-transform:uppercase; letter-spacing:.35px; }
+    .actions-inline { display:flex; gap:8px; flex-wrap:wrap; }
     .empty-state {
-      border: 1px dashed #c8d7e5;
-      background: #f9fcff;
-      border-radius: 18px;
-      padding: 22px;
-      text-align: center;
-      line-height: 1.6;
-      color: var(--muted);
+      border:1px dashed #c8d7e5; background:#f9fcff; border-radius:18px; padding:22px; text-align:center; line-height:1.6; color:var(--muted);
     }
+    .footer-note { text-align:center; color:var(--muted); padding:10px 20px 26px; font-size:13px; }
 
-    .footer-note {
-      text-align: center;
-      color: var(--muted);
-      padding: 10px 20px 26px;
-      font-size: 13px;
+    @media (max-width:1180px) {
+      .landing-inner,.workspace,.kpi-grid,.card-grid,.stats,.role-grid,.form-grid-4 { grid-template-columns:1fr 1fr; }
     }
-
-    @media (max-width: 1180px) {
-      .landing-inner, .workspace, .kpi-grid, .card-grid, .mini-grid, .stats, .role-grid, .form-grid-4 {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 860px) {
-      .landing-inner, .workspace, .kpi-grid, .card-grid, .mini-grid, .stats, .role-grid, .form-grid-2, .form-grid-3, .form-grid-4 {
-        grid-template-columns: 1fr;
-      }
-      .sidebar { position: static; }
-      .hero-card h1 { font-size: 30px; }
-      .topbar { padding: 12px 14px; }
-      .brand { font-size: 18px; }
+    @media (max-width:860px) {
+      .landing-inner,.workspace,.kpi-grid,.card-grid,.stats,.role-grid,.form-grid-2,.form-grid-3,.form-grid-4 { grid-template-columns:1fr; }
+      .sidebar { position:static; }
+      .hero-card h1 { font-size:30px; }
+      .topbar { padding:12px 14px; }
+      .brand { font-size:18px; }
     }
   </style>
 </head>
@@ -504,38 +183,34 @@
   <section class="landing" id="landingSection">
     <div class="landing-inner">
       <div class="hero-card">
-        <h1>Portail scolaire ultra complet</h1>
-        <p>
-          Cette version réunit dans un seul gros fichier HTML un espace élève, parent, professeur et direction avec une connexion bloquée, des comptes réels, l’emploi du temps, la feuille d’appel, la saisie des notes, les devoirs, les absences, les messages, les documents, les annonces, la gestion des comptes et la sauvegarde locale robuste.
-        </p>
-
+        <h1>Koala School</h1>
+        <p>Version finale stable avec connexion, emploi du temps, notes, évaluations de groupe, devoirs, absences, messages, documents, annonces, feuille d’appel et gestion direction.</p>
         <div class="role-grid">
           <div class="role-card active" id="roleCard-eleve" onclick="selectRole('eleve')">
             <div class="role-icon">🎓</div>
             <div class="role-title">Élève</div>
-            <div class="role-desc">Notes, devoirs, absences, emploi du temps, messages, documents</div>
+            <div class="role-desc">Notes, devoirs, absences, emploi du temps, messages</div>
           </div>
           <div class="role-card" id="roleCard-parent" onclick="selectRole('parent')">
             <div class="role-icon">👨‍👩‍👧</div>
             <div class="role-title">Parent</div>
-            <div class="role-desc">Suivi des enfants, résultats, absences, documents et messagerie</div>
+            <div class="role-desc">Suivi des résultats, documents, messages</div>
           </div>
           <div class="role-card" id="roleCard-prof" onclick="selectRole('prof')">
             <div class="role-icon">👨‍🏫</div>
             <div class="role-title">Professeur</div>
-            <div class="role-desc">Saisie pédagogique, feuille d’appel, notes, devoirs, absences, annonces</div>
+            <div class="role-desc">Évaluations, feuille d’appel, devoirs, absences</div>
           </div>
           <div class="role-card" id="roleCard-direction" onclick="selectRole('direction')">
             <div class="role-icon">🏫</div>
             <div class="role-title">Direction</div>
-            <div class="role-desc">Administration complète, suppression des comptes, documents et réinitialisation</div>
+            <div class="role-desc">Gestion des comptes, documents, annonces, cours</div>
           </div>
         </div>
       </div>
 
       <div class="login-card">
-        <h2 style="margin-top:0;">Connexion sécurisée</h2>
-
+        <h2 style="margin-top:0;">Connexion</h2>
         <label class="field-label">Profil</label>
         <select class="select" id="loginRole">
           <option value="eleve">Élève</option>
@@ -543,21 +218,18 @@
           <option value="prof">Professeur</option>
           <option value="direction">Direction</option>
         </select>
-
         <label class="field-label">Identifiant</label>
         <input class="field" id="loginId" type="text" placeholder="Identifiant" />
-
         <label class="field-label">Mot de passe</label>
         <input class="field" id="loginPassword" type="password" placeholder="Mot de passe" />
-
         <button class="solid-btn" style="width:100%; margin-top:16px;" onclick="login()">Se connecter</button>
         <div class="notice" id="loginNotice"></div>
-
-        </div>
+        <div class="notice show info" id="firebaseStatus">Connexion Firebase…</div>
+      </div>
     </div>
   </section>
 
-  <section class="stats" id="globalStats">
+  <section class="stats">
     <div class="stat-card"><div class="stat-title">Élèves</div><div class="stat-value" id="statStudents">0</div></div>
     <div class="stat-card"><div class="stat-title">Parents</div><div class="stat-value" id="statParents">0</div></div>
     <div class="stat-card"><div class="stat-title">Professeurs</div><div class="stat-value" id="statTeachers">0</div></div>
@@ -589,7 +261,6 @@
         <button class="menu-btn hidden" id="menuCallsheet" data-view="callsheet" onclick="showView('callsheet', this)">Feuille d’appel</button>
         <button class="menu-btn hidden" id="menuTeaching" data-view="teaching" onclick="showView('teaching', this)">Saisie pédagogique</button>
         <button class="menu-btn hidden" id="menuManagement" data-view="management" onclick="showView('management', this)">Gestion direction</button>
-
         <div class="menu-title">Session</div>
         <button class="menu-btn" onclick="logout()">Déconnexion</button>
       </aside>
@@ -610,51 +281,48 @@
     </section>
   </div>
 
-  <div class="footer-note">Base complète enregistrée avec une version de stockage locale pour éviter les anciens blocages.</div>
+  <div class="footer-note">Version finale prête à l’emploi.</div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script>
-    const STORAGE_KEY = 'koalaSchoolUltraComplete';
-    const STORAGE_VERSION = 3;
+    const STORAGE_KEY = 'koalaSchoolFinalBackup';
+    const FIREBASE_PATH = 'schoolState';
+    const STORAGE_VERSION = 5;
 
     const firebaseConfig = {
-      apiKey: "AIzaSyAp2gHq6sX_DnlUSwZ2JoyCf_e6gxxJKU4",
-      authDomain: "koala-school.firebaseapp.com",
-      databaseURL: "https://koala-school-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "koala-school",
-      storageBucket: "koala-school.firebasestorage.app",
-      messagingSenderId: "995555659297",
-      appId: "1:995555659297:web:10c3a0b3ef5d89d57b9d60",
-      measurementId: "G-48YDFH8BZN"
+      apiKey: 'AIzaSyAp2gHq6sX_DnlUSwZ2JoyCf_e6gxxJKU4',
+      authDomain: 'koala-school.firebaseapp.com',
+      databaseURL: 'https://koala-school-default-rtdb.europe-west1.firebasedatabase.app',
+      projectId: 'koala-school',
+      storageBucket: 'koala-school.firebasestorage.app',
+      messagingSenderId: '995555659297',
+      appId: '1:995555659297:web:10c3a0b3ef5d89d57b9d60',
+      measurementId: 'G-48YDFH8BZN'
     };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    let firebaseReady = false;
 
     const DEFAULT_STATE = {
       __version: STORAGE_VERSION,
       users: [
-        { id: 1, role: 'eleve', login: 'isaac', password: '1234', name: 'Isaac', className: 'Groupe SAHRAOUI' },
-        { id: 2, role: 'eleve', login: 'souleymane', password: '1234', name: 'Souleymane', className: 'Groupe SAHRAOUI' },
-        { id: 3, role: 'eleve', login: 'assai', password: '1234', name: 'Assai', className: 'Groupe SAHRAOUI' },
-        { id: 4, role: 'eleve', login: 'mohamedamine', password: '1234', name: 'Mohamed Amine', className: 'Groupe SAHRAOUI' },
-        { id: 5, role: 'eleve', login: 'ahmedbachir', password: '1234', name: 'Ahmed Bachir', className: 'Groupe SAHRAOUI' },
-        { id: 6, role: 'eleve', login: 'abdelrahman', password: '1234', name: 'Abdelrahman', className: 'Groupe SAHRAOUI' },
-        { id: 7, role: 'prof', login: 'sahraoui', password: '1234', name: 'M. SAHRAOUI', subject: 'Anglais, Sciences, Culture générale', className: 'Groupe SAHRAOUI' },
-        { id: 8, role: 'direction', login: 'direction', password: '1234', name: 'Compte Direction' }
+        { id:1, role:'eleve', login:'isaac', password:'1234', name:'Isaac', className:'Groupe SAHRAOUI' },
+        { id:2, role:'eleve', login:'souleymane', password:'1234', name:'Souleymane', className:'Groupe SAHRAOUI' },
+        { id:3, role:'eleve', login:'assai', password:'1234', name:'Assai', className:'Groupe SAHRAOUI' },
+        { id:4, role:'eleve', login:'mohamedamine', password:'1234', name:'Mohamed Amine', className:'Groupe SAHRAOUI' },
+        { id:5, role:'eleve', login:'ahmedbachir', password:'1234', name:'Ahmed Bachir', className:'Groupe SAHRAOUI' },
+        { id:6, role:'eleve', login:'abdelrahman', password:'1234', name:'Abdelrahman', className:'Groupe SAHRAOUI' },
+        { id:7, role:'prof', login:'sahraoui', password:'1234', name:'M. SAHRAOUI', subject:'Anglais, Sciences, Culture générale', className:'Groupe SAHRAOUI' },
+        { id:8, role:'direction', login:'direction', password:'1234', name:'Compte Direction' }
       ],
       notes: [],
       homework: [],
       schedule: [
-        { id: 1, className: 'Groupe SAHRAOUI', day: 'Lundi', start: '17:15', end: '18:00', subject: 'Anglais, Sciences, Culture générale', room: 'Salle 1', teacher: 'M. SAHRAOUI', cancelled: false },
-        { id: 2, className: 'Groupe SAHRAOUI', day: 'Mardi', start: '17:15', end: '18:00', subject: 'Anglais, Sciences, Culture générale', room: 'Salle 1', teacher: 'M. SAHRAOUI', cancelled: false },
-        { id: 3, className: 'Groupe SAHRAOUI', day: 'Mercredi', start: '17:15', end: '18:00', subject: 'Anglais, Sciences, Culture générale', room: 'Salle 1', teacher: 'M. SAHRAOUI', cancelled: false },
-        { id: 4, className: 'Groupe SAHRAOUI', day: 'Jeudi', start: '17:15', end: '18:00', subject: 'Anglais, Sciences, Culture générale', room: 'Salle 1', teacher: 'M. SAHRAOUI', cancelled: false },
-        { id: 5, className: 'Groupe SAHRAOUI', day: 'Vendredi', start: '17:15', end: '18:00', subject: 'Anglais, Sciences, Culture générale', room: 'Salle 1', teacher: 'M. SAHRAOUI', cancelled: false },
-        { id: 6, className: 'Groupe SAHRAOUI', day: 'Samedi', start: '17:15', end: '18:00', subject: 'Anglais, Sciences, Culture générale', room: 'Salle 1', teacher: 'M. SAHRAOUI', cancelled: false },
-        { id: 7, className: 'Groupe SAHRAOUI', day: 'Dimanche', start: '17:15', end: '18:00', subject: 'Anglais, Sciences, Culture générale', room: 'Salle 1', teacher: 'M. SAHRAOUI', cancelled: false }
+        { id:1, className:'Groupe SAHRAOUI', day:'Lundi', start:'17:15', end:'18:00', subject:'Anglais, Sciences, Culture générale', room:'Salle 1', teacher:'M. SAHRAOUI', cancelled:false },
+        { id:2, className:'Groupe SAHRAOUI', day:'Mardi', start:'17:15', end:'18:00', subject:'Anglais, Sciences, Culture générale', room:'Salle 1', teacher:'M. SAHRAOUI', cancelled:false },
+        { id:3, className:'Groupe SAHRAOUI', day:'Mercredi', start:'17:15', end:'18:00', subject:'Anglais, Sciences, Culture générale', room:'Salle 1', teacher:'M. SAHRAOUI', cancelled:false },
+        { id:4, className:'Groupe SAHRAOUI', day:'Jeudi', start:'17:15', end:'18:00', subject:'Anglais, Sciences, Culture générale', room:'Salle 1', teacher:'M. SAHRAOUI', cancelled:false },
+        { id:5, className:'Groupe SAHRAOUI', day:'Vendredi', start:'17:15', end:'18:00', subject:'Anglais, Sciences, Culture générale', room:'Salle 1', teacher:'M. SAHRAOUI', cancelled:false },
+        { id:6, className:'Groupe SAHRAOUI', day:'Samedi', start:'17:15', end:'18:00', subject:'Anglais, Sciences, Culture générale', room:'Salle 1', teacher:'M. SAHRAOUI', cancelled:false },
+        { id:7, className:'Groupe SAHRAOUI', day:'Dimanche', start:'17:15', end:'18:00', subject:'Anglais, Sciences, Culture générale', room:'Salle 1', teacher:'M. SAHRAOUI', cancelled:false }
       ],
       attendance: [],
       messages: [],
@@ -662,113 +330,211 @@
       announcements: []
     };
 
-    let state = deepCopy(DEFAULT_STATE);
+    let state = loadLocalState();
     let currentUser = null;
+    let firebaseReady = false;
+    let firebaseEnabled = false;
+    let syncing = false;
 
-    function deepCopy(obj) {
-      return JSON.parse(JSON.stringify(obj));
+    function deepCopy(obj) { return JSON.parse(JSON.stringify(obj)); }
+    function setFirebaseStatus(text, type='info') {
+      const el = document.getElementById('firebaseStatus');
+      el.className = 'notice show ' + type;
+      el.textContent = text;
     }
-
-    function loadState() {
+    function loadLocalState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return deepCopy(DEFAULT_STATE);
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') return parsed;
+      } catch (e) {}
       return deepCopy(DEFAULT_STATE);
     }
-
-    function initializeFirebaseSync() {
-      const ref = db.ref('schoolState');
-
-      ref.once('value').then(snapshot => {
-        if (snapshot.exists()) {
-          const remoteState = snapshot.val();
-          if (remoteState && remoteState.__version === STORAGE_VERSION) {
-            state = remoteState;
-          } else {
-            state = deepCopy(DEFAULT_STATE);
-            ref.set(state);
-          }
-        } else {
-          state = deepCopy(DEFAULT_STATE);
-          ref.set(state);
-        }
-        firebaseReady = true;
-        refreshGlobalStats();
-        if (currentUser) {
-          const refreshedUser = state.users.find(u => u.login === currentUser.login && u.role === currentUser.role);
-          if (refreshedUser) currentUser = refreshedUser;
-          renderAllViews();
-        }
-      }).catch(() => {
-        state = deepCopy(DEFAULT_STATE);
-        refreshGlobalStats();
+    function saveLocalState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+    function sanitizeRemoteState(remote) {
+      if (!remote || typeof remote !== 'object') return loadLocalState();
+      const merged = deepCopy(DEFAULT_STATE);
+      Object.keys(merged).forEach(key => {
+        if (remote[key] !== undefined) merged[key] = remote[key];
       });
-
-      ref.on('value', snapshot => {
-        if (!snapshot.exists()) return;
-        const remoteState = snapshot.val();
-        if (!remoteState) return;
-        state = remoteState;
-        refreshGlobalStats();
-        if (currentUser) {
-          const refreshedUser = state.users.find(u => u.login === currentUser.login && u.role === currentUser.role);
-          if (refreshedUser) currentUser = refreshedUser;
-          renderAllViews();
-        }
-      });
+      merged.__version = STORAGE_VERSION;
+      return merged;
     }
-
-    function saveState() {
-      state.__version = STORAGE_VERSION;
-      refreshGlobalStats();
-      if (firebaseReady) {
-        db.ref('schoolState').set(state);
-      }
-    }
-
-    function nextId(listName) {
-      const arr = state[listName];
-      return arr.length ? Math.max(...arr.map(item => item.id)) + 1 : 1;
-    }
-
-    function resetState() {
-      state = deepCopy(DEFAULT_STATE);
-      saveState();
-      if (currentUser) renderAllViews();
-    }
-
-    function selectRole(role) {
-      document.getElementById('loginRole').value = role;
-      ['eleve','parent','prof','direction'].forEach(r => {
-        document.getElementById('roleCard-' + r).classList.toggle('active', r === role);
-      });
-    }
-
     function showNotice(id, type, text) {
       const el = document.getElementById(id);
       if (!el) return;
       el.className = 'notice show ' + type;
       el.textContent = text;
     }
-
     function clearNotice(id) {
       const el = document.getElementById(id);
       if (!el) return;
       el.className = 'notice';
       el.textContent = '';
     }
-
-    function roleLabel(role) {
-      return role === 'eleve' ? 'Élève' : role === 'parent' ? 'Parent' : role === 'prof' ? 'Professeur' : 'Direction';
-    }
-
-    function roleAvatar(role) {
-      return role === 'prof' ? 'PR' : role === 'direction' ? 'D' : role === 'parent' ? 'P' : 'E';
-    }
-
+    function roleLabel(role) { return role === 'eleve' ? 'Élève' : role === 'parent' ? 'Parent' : role === 'prof' ? 'Professeur' : 'Direction'; }
+    function roleAvatar(role) { return role === 'prof' ? 'PR' : role === 'direction' ? 'D' : role === 'parent' ? 'P' : 'E'; }
     function badgeClassFromText(text) {
       const t = String(text).toLowerCase();
       if (t.includes('présent') || t.includes('faite') || t.includes('fait') || t.includes('justifiée') || t.includes('visible')) return 'green';
       if (t.includes('retard') || t.includes('à faire') || t.includes('signalé') || t.includes('attente')) return 'orange';
-      if (t.includes('absence') || t.includes('non justifiée') || t.includes('supprim')) return 'red';
+      if (t.includes('absence') || t.includes('non justifiée') || t.includes('supprim') || t.includes('annulé')) return 'red';
       return 'blue';
+    }
+    function nextId(listName) {
+      const arr = state[listName];
+      return arr.length ? Math.max(...arr.map(item => item.id)) + 1 : 1;
+    }
+    function selectRole(role) {
+      document.getElementById('loginRole').value = role;
+      ['eleve','parent','prof','direction'].forEach(r => {
+        document.getElementById('roleCard-' + r).classList.toggle('active', r === role);
+      });
+    }
+    function getStudents() { return state.users.filter(u => u.role === 'eleve'); }
+    function getStudentByLogin(login) { return state.users.find(u => u.role === 'eleve' && u.login === login) || null; }
+    function studentName(login) { const s = getStudentByLogin(login); return s ? s.name : login; }
+    function getTargetStudentLogins() {
+      if (!currentUser) return [];
+      if (currentUser.role === 'eleve') return [currentUser.login];
+      if (currentUser.role === 'parent') return [currentUser.linkedStudentLogin].filter(Boolean);
+      return getStudents().map(s => s.login);
+    }
+    function getMainStudent() {
+      const logins = getTargetStudentLogins();
+      if (!logins.length) return getStudents()[0] || null;
+      return getStudentByLogin(logins[0]) || getStudents()[0] || null;
+    }
+    function getClassNameForCurrent() {
+      if (currentUser?.role === 'prof') return currentUser.className || 'Groupe SAHRAOUI';
+      const student = getMainStudent();
+      return student?.className || 'Groupe SAHRAOUI';
+    }
+    function visibleNotes() {
+      const targets = getTargetStudentLogins();
+      if (!currentUser) return [];
+      if (currentUser.role === 'prof' || currentUser.role === 'direction') return state.notes.slice().sort((a,b) => b.id - a.id);
+      return state.notes.filter(n => targets.includes(n.studentLogin)).sort((a,b) => b.id - a.id);
+    }
+    function visibleHomework() {
+      const className = getClassNameForCurrent();
+      return state.homework.filter(h => h.className === className).sort((a,b) => a.dueDate.localeCompare(b.dueDate));
+    }
+    function visibleAttendance() {
+      const targets = getTargetStudentLogins();
+      if (!currentUser) return [];
+      if (currentUser.role === 'prof' || currentUser.role === 'direction') {
+        return state.attendance.filter(a => {
+          const st = getStudentByLogin(a.studentLogin);
+          return st && st.className === getClassNameForCurrent();
+        }).sort((a,b) => b.id - a.id);
+      }
+      return state.attendance.filter(a => targets.includes(a.studentLogin)).sort((a,b) => b.id - a.id);
+    }
+    function visibleMessages() {
+      if (!currentUser) return [];
+      return state.messages.filter(m => {
+        if (m.toRole === 'all') return true;
+        if (currentUser.role === 'direction') return true;
+        return m.fromRole === currentUser.role || m.toRole === currentUser.role || m.fromLogin === currentUser.login || m.toLogin === currentUser.login;
+      }).sort((a,b) => b.id - a.id);
+    }
+    function visibleDocuments() {
+      if (!currentUser) return [];
+      return state.documents.filter(d => d.audience === 'all' || d.audience.split(',').includes(currentUser.role)).sort((a,b) => b.id - a.id);
+    }
+    function visibleAnnouncements() {
+      if (!currentUser) return [];
+      return state.announcements.filter(a => a.audience === 'all' || a.audience.split(',').includes(currentUser.role)).sort((a,b) => b.id - a.id);
+    }
+    function calculateAverage(studentLogin) {
+      const notes = state.notes.filter(n => n.studentLogin === studentLogin);
+      if (!notes.length) return '—';
+      let total = 0, coefs = 0;
+      notes.forEach(n => {
+        const coef = Number(n.coefficient || 1);
+        total += (Number(n.value) / Number(n.outOf)) * 20 * coef;
+        coefs += coef;
+      });
+      return (total / coefs).toFixed(2) + '/20';
+    }
+    function refreshGlobalStats() {
+      document.getElementById('statStudents').textContent = state.users.filter(u => u.role === 'eleve').length;
+      document.getElementById('statParents').textContent = state.users.filter(u => u.role === 'parent').length;
+      document.getElementById('statTeachers').textContent = state.users.filter(u => u.role === 'prof').length;
+      document.getElementById('statMessages').textContent = state.messages.length;
+      document.getElementById('statHomework').textContent = state.homework.length;
+      document.getElementById('statDocs').textContent = state.documents.length;
+    }
+
+    function initializeFirebaseSync() {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        firebaseEnabled = true;
+        const ref = firebase.database().ref(FIREBASE_PATH);
+        ref.once('value').then(snapshot => {
+          if (snapshot.exists()) {
+            state = sanitizeRemoteState(snapshot.val());
+            saveLocalState();
+          } else {
+            saveLocalState();
+            syncing = true;
+            ref.set(state).finally(() => syncing = false);
+          }
+          firebaseReady = true;
+          setFirebaseStatus('Firebase connecté', 'success');
+          refreshGlobalStats();
+          if (currentUser) renderAllViews();
+        }).catch(err => {
+          console.error(err);
+          firebaseEnabled = false;
+          firebaseReady = false;
+          state = loadLocalState();
+          setFirebaseStatus('Mode local activé', 'info');
+          refreshGlobalStats();
+        });
+        ref.on('value', snapshot => {
+          if (!firebaseReady || syncing) return;
+          if (!snapshot.exists()) return;
+          state = sanitizeRemoteState(snapshot.val());
+          saveLocalState();
+          refreshGlobalStats();
+          if (currentUser) {
+            const refreshed = state.users.find(u => u.login === currentUser.login && u.role === currentUser.role);
+            if (refreshed) currentUser = refreshed;
+            renderAllViews();
+          }
+        });
+      } catch (err) {
+        console.error(err);
+        firebaseEnabled = false;
+        firebaseReady = false;
+        state = loadLocalState();
+        setFirebaseStatus('Mode local activé', 'info');
+        refreshGlobalStats();
+      }
+    }
+
+    function saveState() {
+      state.__version = STORAGE_VERSION;
+      saveLocalState();
+      refreshGlobalStats();
+      if (firebaseEnabled && firebaseReady) {
+        syncing = true;
+        firebase.database().ref(FIREBASE_PATH).set(state)
+          .then(() => setFirebaseStatus('Sauvegardé dans Firebase', 'success'))
+          .catch(err => {
+            console.error(err);
+            firebaseEnabled = false;
+            setFirebaseStatus('Mode local activé', 'info');
+          })
+          .finally(() => syncing = false);
+      } else {
+        setFirebaseStatus('Mode local activé', 'info');
+      }
     }
 
     function login() {
@@ -777,12 +543,10 @@
       const loginValue = document.getElementById('loginId').value.trim().toLowerCase();
       const passwordValue = document.getElementById('loginPassword').value.trim();
       const user = state.users.find(u => u.role === role && u.login.toLowerCase() === loginValue && u.password === passwordValue);
-
       if (!user) {
         showNotice('loginNotice', 'error', 'Identifiant ou mot de passe incorrect pour ce profil.');
         return;
       }
-
       currentUser = user;
       document.getElementById('landingSection').classList.add('hidden');
       document.getElementById('workspace').classList.add('show');
@@ -792,14 +556,11 @@
       document.getElementById('menuTeaching').classList.toggle('hidden', user.role !== 'prof');
       document.getElementById('menuCallsheet').classList.toggle('hidden', user.role !== 'prof');
       document.getElementById('menuManagement').classList.toggle('hidden', user.role !== 'direction');
-      document.querySelectorAll('.menu-btn[data-view]').forEach(btn => btn.classList.remove('active'));
-      const first = document.querySelector('.menu-btn[data-view="dashboard"]');
-      if (first) first.classList.add('active');
       renderAllViews();
+      const first = document.querySelector('.menu-btn[data-view="dashboard"]');
       showView('dashboard', first);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
     function logout() {
       currentUser = null;
       document.getElementById('workspace').classList.remove('show');
@@ -807,9 +568,7 @@
       document.getElementById('loginId').value = '';
       document.getElementById('loginPassword').value = '';
       clearNotice('loginNotice');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
     function showView(viewName, btn) {
       document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
       const target = document.getElementById('view-' + viewName);
@@ -818,318 +577,72 @@
       if (btn) btn.classList.add('active');
     }
 
-    function getStudents() {
-      return state.users.filter(u => u.role === 'eleve');
-    }
-
-    function getStudentByLogin(login) {
-      return state.users.find(u => u.role === 'eleve' && u.login === login) || null;
-    }
-
-    function getTargetStudentLogins() {
-      if (!currentUser) return [];
-      if (currentUser.role === 'eleve') return [currentUser.login];
-      if (currentUser.role === 'parent') return [currentUser.linkedStudentLogin].filter(Boolean);
-      return getStudents().map(s => s.login);
-    }
-
-    function getMainStudent() {
-      const logins = getTargetStudentLogins();
-      if (!logins.length) return getStudents()[0] || null;
-      return getStudentByLogin(logins[0]) || getStudents()[0] || null;
-    }
-
-    function getClassNameForCurrent() {
-      if (currentUser?.role === 'prof') return currentUser.className || 'Groupe SAHRAOUI';
-      const student = getMainStudent();
-      return student?.className || 'Groupe SAHRAOUI';
-    }
-
-    function visibleNotes() {
-      const targets = getTargetStudentLogins();
-      if (currentUser.role === 'prof' || currentUser.role === 'direction') return state.notes.slice().sort((a,b) => b.id - a.id);
-      return state.notes.filter(n => targets.includes(n.studentLogin)).sort((a,b) => b.id - a.id);
-    }
-
-    function visibleHomework() {
-      const className = getClassNameForCurrent();
-      return state.homework.filter(h => h.className === className).sort((a,b) => a.dueDate.localeCompare(b.dueDate));
-    }
-
-    function visibleAttendance() {
-      const targets = getTargetStudentLogins();
-      if (currentUser.role === 'prof' || currentUser.role === 'direction') {
-        return state.attendance.filter(a => {
-          const student = getStudentByLogin(a.studentLogin);
-          return student && student.className === getClassNameForCurrent();
-        }).sort((a,b) => b.id - a.id);
-      }
-      return state.attendance.filter(a => targets.includes(a.studentLogin)).sort((a,b) => b.id - a.id);
-    }
-
-    function visibleMessages() {
-      return state.messages.filter(m => {
-        if (m.toRole === 'all') return true;
-        if (currentUser.role === 'direction') return true;
-        return m.fromRole === currentUser.role || m.toRole === currentUser.role || m.fromLogin === currentUser.login || m.toLogin === currentUser.login;
-      }).sort((a,b) => b.id - a.id);
-    }
-
-    function visibleDocuments() {
-      return state.documents.filter(d => {
-        if (d.audience === 'all') return true;
-        return d.audience.split(',').includes(currentUser.role);
-      }).sort((a,b) => b.id - a.id);
-    }
-
-    function visibleAnnouncements() {
-      return state.announcements.filter(a => {
-        if (a.audience === 'all') return true;
-        return a.audience.split(',').includes(currentUser.role);
-      }).sort((a,b) => b.id - a.id);
-    }
-
-    function calculateAverage(studentLogin) {
-      const notes = state.notes.filter(n => n.studentLogin === studentLogin);
-      if (!notes.length) return '—';
-      let total = 0;
-      let coefs = 0;
-      notes.forEach(n => {
-        const coef = Number(n.coefficient || 1);
-        total += (Number(n.value) / Number(n.outOf)) * 20 * coef;
-        coefs += coef;
-      });
-      return (total / coefs).toFixed(2) + '/20';
-    }
-
     function renderDashboard() {
       const mainStudent = getMainStudent();
-      const notes = visibleNotes().slice(0, 5);
-      const homework = visibleHomework().slice(0, 5);
-      const attendance = visibleAttendance().slice(0, 5);
-      const messages = visibleMessages().slice(0, 5);
-      const docs = visibleDocuments().slice(0, 4);
-      const announcements = visibleAnnouncements().slice(0, 4);
+      const notes = visibleNotes().slice(0,5);
+      const homework = visibleHomework().slice(0,5);
+      const attendance = visibleAttendance().slice(0,5);
+      const messages = visibleMessages().slice(0,5);
+      const docs = visibleDocuments().slice(0,4);
+      const announcements = visibleAnnouncements().slice(0,4);
       const classStudents = getStudents().filter(s => s.className === getClassNameForCurrent());
-
-      let extraKpis = '';
-      if (currentUser.role === 'prof') {
-        extraKpis = `
-          <div class="kpi"><div class="kpi-label">Élèves du groupe</div><div class="kpi-value">${classStudents.length}</div></div>
-          <div class="kpi"><div class="kpi-label">Feuille d'appel</div><div class="kpi-value">Prête</div></div>
-        `;
-      }
-      if (currentUser.role === 'direction') {
-        extraKpis = `
-          <div class="kpi"><div class="kpi-label">Comptes</div><div class="kpi-value">${state.users.length}</div></div>
-          <div class="kpi"><div class="kpi-label">Parents</div><div class="kpi-value">${state.users.filter(u => u.role === 'parent').length}</div></div>
-        `;
-      }
-
+      let extra = '';
+      if (currentUser.role === 'prof') extra = `<div class="kpi"><div class="kpi-label">Élèves du groupe</div><div class="kpi-value">${classStudents.length}</div></div><div class="kpi"><div class="kpi-label">Feuille d'appel</div><div class="kpi-value">Prête</div></div>`;
+      if (currentUser.role === 'direction') extra = `<div class="kpi"><div class="kpi-label">Comptes</div><div class="kpi-value">${state.users.length}</div></div><div class="kpi"><div class="kpi-label">Parents</div><div class="kpi-value">${state.users.filter(u => u.role === 'parent').length}</div></div>`;
       document.getElementById('view-dashboard').innerHTML = `
         <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Tableau de bord</h2>
-            <div class="panel-subtitle">Bienvenue ${currentUser.name}. Résumé complet de ton espace ${roleLabel(currentUser.role).toLowerCase()}.</div>
-          </div>
+          <div><h2 class="panel-title">Tableau de bord</h2><div class="panel-subtitle">Bienvenue ${currentUser.name}.</div></div>
           ${currentUser.role === 'direction' ? '<button class="danger-btn" onclick="resetState()">Réinitialiser les données</button>' : ''}
         </div>
-
         <div class="kpi-grid">
           <div class="kpi"><div class="kpi-label">Moyenne générale</div><div class="kpi-value">${(mainStudent && (currentUser.role === 'eleve' || currentUser.role === 'parent')) ? calculateAverage(mainStudent.login) : '—'}</div></div>
           <div class="kpi"><div class="kpi-label">Devoirs</div><div class="kpi-value">${visibleHomework().length}</div></div>
           <div class="kpi"><div class="kpi-label">Messages</div><div class="kpi-value">${visibleMessages().length}</div></div>
           <div class="kpi"><div class="kpi-label">Documents</div><div class="kpi-value">${visibleDocuments().length}</div></div>
-          ${extraKpis}
+          ${extra}
         </div>
-
         <div class="card-grid" style="margin-top:18px;">
-          <div class="info-list-card">
-            <div class="panel-header"><h3 style="margin:0;">Dernières notes</h3></div>
-            <div class="section-list">
-              ${notes.map(n => `<div class="row-item"><div class="row-left"><strong>${n.subject}</strong><span>${studentName(n.studentLogin)} • ${n.teacher} • ${n.date}</span></div><div class="badge blue">${n.value}/${n.outOf}</div></div>`).join('') || '<div class="empty-state">Aucune note disponible.</div>'}
-            </div>
-          </div>
-
-          <div class="info-list-card">
-            <div class="panel-header"><h3 style="margin:0;">Prochains devoirs</h3></div>
-            <div class="section-list">
-              ${homework.map(h => `<div class="row-item"><div class="row-left"><strong>${h.subject} — ${h.title}</strong><span>${h.details}</span></div><div class="badge orange">${h.dueDate}</div></div>`).join('') || '<div class="empty-state">Aucun devoir disponible.</div>'}
-            </div>
-          </div>
-
-          <div class="info-list-card">
-            <div class="panel-header"><h3 style="margin:0;">Présences et messages</h3></div>
-            <div class="section-list">
-              ${attendance.map(a => `<div class="row-item"><div class="row-left"><strong>${studentName(a.studentLogin)} — ${a.type}</strong><span>${a.date} • ${a.reason}</span></div><div class="badge ${badgeClassFromText(a.status)}">${a.status}</div></div>`).join('')}
-              ${messages.map(m => `<div class="row-item"><div class="row-left"><strong>${m.subject}</strong><span>${m.fromName} → ${m.toName}</span></div><div class="badge blue">${roleLabel(m.fromRole)}</div></div>`).join('')}
-              ${!attendance.length && !messages.length ? '<div class="empty-state">Aucun message ni événement de présence.</div>' : ''}
-            </div>
-          </div>
-
-          <div class="info-list-card">
-            <div class="panel-header"><h3 style="margin:0;">Annonces et documents</h3></div>
-            <div class="section-list">
-              ${announcements.map(a => `<div class="row-item"><div class="row-left"><strong>${a.title}</strong><span>${a.author} • ${a.date}</span></div><div class="badge blue">Annonce</div></div>`).join('')}
-              ${docs.map(d => `<div class="row-item"><div class="row-left"><strong>${d.title}</strong><span>${d.category} • ${d.date}</span></div><div class="badge green">Document</div></div>`).join('')}
-              ${!announcements.length && !docs.length ? '<div class="empty-state">Aucune annonce ni document.</div>' : ''}
-            </div>
-          </div>
-        </div>
-      `;
+          <div class="info-list-card"><div class="panel-header"><h3 style="margin:0;">Dernières notes</h3></div><div class="section-list">${notes.map(n => `<div class="row-item"><div class="row-left"><strong>${n.evaluationTitle || n.subject}</strong><span>${studentName(n.studentLogin)} • ${n.teacher} • ${n.date}</span></div><div class="badge blue">${n.value}/${n.outOf}</div></div>`).join('') || '<div class="empty-state">Aucune note disponible.</div>'}</div></div>
+          <div class="info-list-card"><div class="panel-header"><h3 style="margin:0;">Prochains devoirs</h3></div><div class="section-list">${homework.map(h => `<div class="row-item"><div class="row-left"><strong>${h.subject} — ${h.title}</strong><span>${h.details}</span></div><div class="badge orange">${h.dueDate}</div></div>`).join('') || '<div class="empty-state">Aucun devoir disponible.</div>'}</div></div>
+          <div class="info-list-card"><div class="panel-header"><h3 style="margin:0;">Présences et messages</h3></div><div class="section-list">${attendance.map(a => `<div class="row-item"><div class="row-left"><strong>${studentName(a.studentLogin)} — ${a.type}</strong><span>${a.date} • ${a.reason}</span></div><div class="badge ${badgeClassFromText(a.status)}">${a.status}</div></div>`).join('')}${messages.map(m => `<div class="row-item"><div class="row-left"><strong>${m.subject}</strong><span>${m.fromName} → ${m.toName}</span></div><div class="badge blue">${roleLabel(m.fromRole)}</div></div>`).join('')}${!attendance.length && !messages.length ? '<div class="empty-state">Aucun message ni événement de présence.</div>' : ''}</div></div>
+          <div class="info-list-card"><div class="panel-header"><h3 style="margin:0;">Annonces et documents</h3></div><div class="section-list">${announcements.map(a => `<div class="row-item"><div class="row-left"><strong>${a.title}</strong><span>${a.author} • ${a.date}</span></div><div class="badge blue">Annonce</div></div>`).join('')}${docs.map(d => `<div class="row-item"><div class="row-left"><strong>${d.title}</strong><span>${d.category} • ${d.date}</span></div><div class="badge green">Document</div></div>`).join('')}${!announcements.length && !docs.length ? '<div class="empty-state">Aucune annonce ni document.</div>' : ''}</div></div>
+        </div>`;
     }
 
     function renderNotes() {
       const notes = visibleNotes();
       const mainStudent = getMainStudent();
       document.getElementById('view-notes').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Notes</h2>
-            <div class="panel-subtitle">Consultation détaillée des notes, coefficients et commentaires.</div>
-          </div>
-          <div class="badge blue">${mainStudent && (currentUser.role === 'eleve' || currentUser.role === 'parent') ? 'Moyenne : ' + calculateAverage(mainStudent.login) : 'Vue complète'}</div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Élève</th><th>Évaluation</th><th>Matière</th><th>Note</th><th>Coefficient</th><th>Professeur</th><th>Date</th><th>Commentaire</th>${currentUser.role === 'prof' ? '<th>Actions</th>' : ''}</tr>
-            </thead>
-            <tbody>
-              ${notes.map(n => `<tr><td>${studentName(n.studentLogin)}</td><td>${n.evaluationTitle || 'Évaluation'}</td><td>${n.subject}</td><td><strong>${n.value}/${n.outOf}</strong></td><td>${n.coefficient}</td><td>${n.teacher}</td><td>${n.date}</td><td>${n.comment || '—'}</td>${currentUser.role === 'prof' ? `<td><div class="actions-inline"><button class="light-btn" onclick="editNotePrompt(${n.id})">Modifier</button><button class="danger-btn" onclick="deleteNote(${n.id})">Supprimer</button></div></td>` : ''}</tr>`).join('') || `<tr><td colspan="${currentUser.role === 'prof' ? 9 : 8}">Aucune note enregistrée.</td></tr>`}
-            </tbody>
-          </table>
-        </div>
-      `;
+        <div class="panel-header"><div><h2 class="panel-title">Notes</h2><div class="panel-subtitle">Consultation détaillée des notes.</div></div><div class="badge blue">${mainStudent && (currentUser.role === 'eleve' || currentUser.role === 'parent') ? 'Moyenne : ' + calculateAverage(mainStudent.login) : 'Vue complète'}</div></div>
+        <div class="table-wrap"><table><thead><tr><th>Élève</th><th>Évaluation</th><th>Matière</th><th>Note</th><th>Coefficient</th><th>Professeur</th><th>Date</th><th>Commentaire</th>${currentUser.role === 'prof' ? '<th>Actions</th>' : ''}</tr></thead><tbody>${notes.map(n => `<tr><td>${studentName(n.studentLogin)}</td><td>${n.evaluationTitle || 'Évaluation'}</td><td>${n.subject}</td><td><strong>${n.value}/${n.outOf}</strong></td><td>${n.coefficient}</td><td>${n.teacher}</td><td>${n.date}</td><td>${n.comment || '—'}</td>${currentUser.role === 'prof' ? `<td><div class="actions-inline"><button class="light-btn" onclick="editNotePrompt(${n.id})">Modifier</button><button class="danger-btn" onclick="deleteNote(${n.id})">Supprimer</button></div></td>` : ''}</tr>`).join('') || `<tr><td colspan="${currentUser.role === 'prof' ? 9 : 8}">Aucune note enregistrée.</td></tr>`}</tbody></table></div>`;
     }
 
     function renderSchedule() {
-      const className = getClassNameForCurrent();
-      const rows = state.schedule.filter(s => s.className === className);
+      const rows = state.schedule.filter(s => s.className === getClassNameForCurrent());
       document.getElementById('view-schedule').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Emploi du temps</h2>
-            <div class="panel-subtitle">Organisation hebdomadaire du ${className}.</div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Jour</th><th>Début</th><th>Fin</th><th>Matière</th><th>Salle</th><th>Professeur</th></tr>
-            </thead>
-            <tbody>
-              ${rows.map(r => `<tr><td>${r.day}</td><td>${r.start}</td><td>${r.end}</td><td>${r.cancelled ? `<span class="badge red">Cours annulé</span> ${r.subject}` : r.subject}</td><td>${r.room}</td><td>${r.teacher}</td></tr>`).join('') || '<tr><td colspan="6">Aucun cours enregistré.</td></tr>'}
-            </tbody>
-          </table>
-        </div>
-      `;
+        <div class="panel-header"><div><h2 class="panel-title">Emploi du temps</h2><div class="panel-subtitle">Organisation hebdomadaire.</div></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Jour</th><th>Début</th><th>Fin</th><th>Matière</th><th>Salle</th><th>Professeur</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r.day}</td><td>${r.start}</td><td>${r.end}</td><td>${r.cancelled ? `<span class="badge red">Cours annulé</span> ${r.subject}` : r.subject}</td><td>${r.room}</td><td>${r.teacher}</td></tr>`).join('') || '<tr><td colspan="6">Aucun cours enregistré.</td></tr>'}</tbody></table></div>`;
     }
 
     function renderHomework() {
       const rows = visibleHomework();
       const mainStudent = getMainStudent();
       document.getElementById('view-homework').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Devoirs</h2>
-            <div class="panel-subtitle">Travail demandé, échéances et état d’avancement.</div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Matière</th><th>Titre</th><th>Détails</th><th>Pour le</th><th>Donné par</th>${(currentUser.role === 'eleve' || currentUser.role === 'parent') ? '<th>État</th>' : '<th>Progression</th>'}</tr>
-            </thead>
-            <tbody>
-              ${rows.map(h => {
-                const studentLogin = mainStudent?.login || '';
-                const done = !!h.statusByStudent?.[studentLogin];
-                const doneCount = Object.values(h.statusByStudent || {}).filter(Boolean).length;
-                const total = Object.keys(h.statusByStudent || {}).length;
-                return `<tr>
-                  <td>${h.subject}</td>
-                  <td>${h.title}</td>
-                  <td>${h.details}</td>
-                  <td>${h.dueDate}</td>
-                  <td>${h.givenBy}</td>
-                  ${(currentUser.role === 'eleve' || currentUser.role === 'parent') ? `<td>${currentUser.role === 'eleve' ? `<button class="${done ? 'light-btn' : 'solid-btn'}" onclick="toggleHomeworkStatus(${h.id})">${done ? 'Fait' : 'Marquer fait'}</button>` : `<span class="badge ${done ? 'green' : 'orange'}">${done ? 'Fait' : 'À faire'}</span>`}</td>` : `<td><span class="badge blue">${doneCount}/${total}</span></td>`}
-                </tr>`;
-              }).join('') || `<tr><td colspan="6">Aucun devoir.</td></tr>`}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function toggleHomeworkStatus(id) {
-      if (!currentUser || currentUser.role !== 'eleve') return;
-      const hw = state.homework.find(h => h.id === id);
-      if (!hw) return;
-      hw.statusByStudent = hw.statusByStudent || {};
-      hw.statusByStudent[currentUser.login] = !hw.statusByStudent[currentUser.login];
-      saveState();
-      renderHomework();
-      renderDashboard();
+        <div class="panel-header"><div><h2 class="panel-title">Devoirs</h2><div class="panel-subtitle">Travail demandé, échéances et état d’avancement.</div></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Matière</th><th>Titre</th><th>Détails</th><th>Pour le</th><th>Donné par</th>${(currentUser.role === 'eleve' || currentUser.role === 'parent') ? '<th>État</th>' : '<th>Progression</th>'}</tr></thead><tbody>${rows.map(h => {
+          const studentLogin = mainStudent?.login || '';
+          const done = !!h.statusByStudent?.[studentLogin];
+          const doneCount = Object.values(h.statusByStudent || {}).filter(Boolean).length;
+          const total = Object.keys(h.statusByStudent || {}).length;
+          return `<tr><td>${h.subject}</td><td>${h.title}</td><td>${h.details}</td><td>${h.dueDate}</td><td>${h.givenBy}</td>${(currentUser.role === 'eleve' || currentUser.role === 'parent') ? `<td>${currentUser.role === 'eleve' ? `<button class="${done ? 'light-btn' : 'solid-btn'}" onclick="toggleHomeworkStatus(${h.id})">${done ? 'Fait' : 'Marquer fait'}</button>` : `<span class="badge ${done ? 'green' : 'orange'}">${done ? 'Fait' : 'À faire'}</span>`}</td>` : `<td><span class="badge blue">${doneCount}/${total}</span></td>`}</tr>`;
+        }).join('') || '<tr><td colspan="6">Aucun devoir.</td></tr>'}</tbody></table></div>`;
     }
 
     function renderAttendance() {
       const rows = visibleAttendance();
       document.getElementById('view-attendance').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Absences et retards</h2>
-            <div class="panel-subtitle">Suivi de la présence et des incidents de ponctualité.</div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Élève</th><th>Type</th><th>Date</th><th>Statut</th><th>Motif</th></tr>
-            </thead>
-            <tbody>
-              ${rows.map(r => `<tr><td>${studentName(r.studentLogin)}</td><td>${r.type}</td><td>${r.date}</td><td><span class="badge ${badgeClassFromText(r.status)}">${r.status}</span></td><td>${r.reason}</td></tr>`).join('') || '<tr><td colspan="5">Aucune absence ni retard.</td></tr>'}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function renderMessages() {
-      const rows = visibleMessages();
-      document.getElementById('view-messages').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Messagerie</h2>
-            <div class="panel-subtitle">Échanges internes entre élèves, parents, professeur et direction.</div>
-          </div>
-        </div>
-
-        <div class="small-card" style="margin-bottom:18px;">
-          <div class="form-grid-2">
-            <div>
-              <label class="field-label">Rôle destinataire</label>
-              <select class="select" id="msgToRole">
-                ${messageRoleOptions()}
-              </select>
-            </div>
-            <div>
-              <label class="field-label">Sujet</label>
-              <input class="field" id="msgSubject" placeholder="Sujet du message" />
-            </div>
-          </div>
-          <label class="field-label">Message</label>
-          <textarea class="textarea" id="msgBody" placeholder="Écris ton message ici..."></textarea>
-          <div class="actions-inline" style="margin-top:12px;">
-            <button class="solid-btn" onclick="sendMessage()">Envoyer</button>
-          </div>
-          <div class="notice" id="messageNotice"></div>
-        </div>
-
-        <div class="section-list">
-          ${rows.map(m => `<div class="row-item" style="align-items:flex-start;"><div class="row-left"><strong>${m.subject}</strong><span>${m.fromName} (${roleLabel(m.fromRole)}) → ${m.toName} • ${m.date}</span><div style="margin-top:8px; color:#35506a; line-height:1.55;">${m.body}</div></div><div class="badge ${m.toRole === 'all' ? 'green' : 'blue'}">${m.toRole === 'all' ? 'Tous' : roleLabel(m.toRole)}</div></div>`).join('') || '<div class="empty-state">Aucun message.</div>'}
-        </div>
-      `;
+        <div class="panel-header"><div><h2 class="panel-title">Absences et retards</h2><div class="panel-subtitle">Suivi de la présence.</div></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Élève</th><th>Type</th><th>Date</th><th>Statut</th><th>Motif</th></tr></thead><tbody>${rows.map(r => `<tr><td>${studentName(r.studentLogin)}</td><td>${r.type}</td><td>${r.date}</td><td><span class="badge ${badgeClassFromText(r.status)}">${r.status}</span></td><td>${r.reason}</td></tr>`).join('') || '<tr><td colspan="5">Aucune absence ni retard.</td></tr>'}</tbody></table></div>`;
     }
 
     function messageRoleOptions() {
@@ -1138,74 +651,35 @@
       if (currentUser.role === 'prof') return '<option value="eleve">Élève</option><option value="parent">Parent</option><option value="direction">Direction</option>';
       return '<option value="all">Tous</option><option value="eleve">Élève</option><option value="parent">Parent</option><option value="prof">Professeur</option>';
     }
-
     function receiverNameForRole(role) {
       if (role === 'all') return 'Tous';
       const found = state.users.find(u => u.role === role);
       return found ? found.name : roleLabel(role);
     }
-
     function receiverLoginForRole(role) {
       if (role === 'all') return 'all';
       const found = state.users.find(u => u.role === role);
       return found ? found.login : '';
     }
-
-    function sendMessage() {
-      clearNotice('messageNotice');
-      const toRole = document.getElementById('msgToRole').value;
-      const subject = document.getElementById('msgSubject').value.trim();
-      const body = document.getElementById('msgBody').value.trim();
-      if (!subject || !body) {
-        showNotice('messageNotice', 'error', 'Remplis le sujet et le message.');
-        return;
-      }
-      state.messages.push({
-        id: nextId('messages'),
-        fromRole: currentUser.role,
-        fromLogin: currentUser.login,
-        fromName: currentUser.name,
-        toRole,
-        toLogin: receiverLoginForRole(toRole),
-        toName: receiverNameForRole(toRole),
-        subject,
-        body,
-        date: new Date().toLocaleString('fr-FR')
-      });
-      saveState();
-      renderMessages();
-      renderDashboard();
-      showNotice('messageNotice', 'success', 'Message envoyé.');
+    function renderMessages() {
+      const rows = visibleMessages();
+      document.getElementById('view-messages').innerHTML = `
+        <div class="panel-header"><div><h2 class="panel-title">Messagerie</h2><div class="panel-subtitle">Échanges internes.</div></div></div>
+        <div class="small-card" style="margin-bottom:18px;">
+          <div class="form-grid-2"><div><label class="field-label">Rôle destinataire</label><select class="select" id="msgToRole">${messageRoleOptions()}</select></div><div><label class="field-label">Sujet</label><input class="field" id="msgSubject" placeholder="Sujet du message" /></div></div>
+          <label class="field-label">Message</label><textarea class="textarea" id="msgBody" placeholder="Écris ton message ici..."></textarea>
+          <div class="actions-inline" style="margin-top:12px;"><button class="solid-btn" onclick="sendMessage()">Envoyer</button></div><div class="notice" id="messageNotice"></div>
+        </div>
+        <div class="section-list">${rows.map(m => `<div class="row-item" style="align-items:flex-start;"><div class="row-left"><strong>${m.subject}</strong><span>${m.fromName} (${roleLabel(m.fromRole)}) → ${m.toName} • ${m.date}</span><div style="margin-top:8px; color:#35506a; line-height:1.55;">${m.body}</div></div><div class="badge ${m.toRole === 'all' ? 'green' : 'blue'}">${m.toRole === 'all' ? 'Tous' : roleLabel(m.toRole)}</div></div>`).join('') || '<div class="empty-state">Aucun message.</div>'}</div>`;
     }
 
     function renderDocuments() {
       const rows = visibleDocuments();
-      document.getElementById('view-documents').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Documents</h2>
-            <div class="panel-subtitle">Documents administratifs, pédagogiques et bulletins.</div>
-          </div>
-        </div>
-        <div class="section-list">
-          ${rows.map(d => `<div class="row-item"><div class="row-left"><strong>${d.title}</strong><span>${d.category} • Ajouté par ${d.uploadedBy} • ${d.date}</span><div style="margin-top:7px; color:#45617c;">${d.details}</div></div><div class="badge green">Visible</div></div>`).join('') || '<div class="empty-state">Aucun document.</div>'}
-        </div>
-      `;
+      document.getElementById('view-documents').innerHTML = `<div class="panel-header"><div><h2 class="panel-title">Documents</h2><div class="panel-subtitle">Documents administratifs, pédagogiques et bulletins.</div></div></div><div class="section-list">${rows.map(d => `<div class="row-item"><div class="row-left"><strong>${d.title}</strong><span>${d.category} • Ajouté par ${d.uploadedBy} • ${d.date}</span><div style="margin-top:7px; color:#45617c;">${d.details}</div></div><div class="badge green">Visible</div></div>`).join('') || '<div class="empty-state">Aucun document.</div>'}</div>`;
     }
-
     function renderAnnouncements() {
       const rows = visibleAnnouncements();
-      document.getElementById('view-announcements').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Annonces</h2>
-            <div class="panel-subtitle">Informations générales et communication interne.</div>
-          </div>
-        </div>
-        <div class="section-list">
-          ${rows.map(a => `<div class="row-item" style="align-items:flex-start;"><div class="row-left"><strong>${a.title}</strong><span>${a.author} • ${a.date} • ${a.audience}</span><div style="margin-top:8px; color:#35506a; line-height:1.55;">${a.content}</div></div><div class="badge blue">Annonce</div></div>`).join('') || '<div class="empty-state">Aucune annonce.</div>'}
-        </div>
-      `;
+      document.getElementById('view-announcements').innerHTML = `<div class="panel-header"><div><h2 class="panel-title">Annonces</h2><div class="panel-subtitle">Informations générales et communication interne.</div></div></div><div class="section-list">${rows.map(a => `<div class="row-item" style="align-items:flex-start;"><div class="row-left"><strong>${a.title}</strong><span>${a.author} • ${a.date} • ${a.audience}</span><div style="margin-top:8px; color:#35506a; line-height:1.55;">${a.content}</div></div><div class="badge blue">Annonce</div></div>`).join('') || '<div class="empty-state">Aucune annonce.</div>'}</div>`;
     }
 
     function renderCallsheet() {
@@ -1215,50 +689,8 @@
       }
       const students = getStudents().filter(s => s.className === getClassNameForCurrent());
       const lastAttendanceByStudent = {};
-      visibleAttendance().forEach(a => {
-        if (!lastAttendanceByStudent[a.studentLogin]) lastAttendanceByStudent[a.studentLogin] = a;
-      });
-      document.getElementById('view-callsheet').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Feuille d’appel</h2>
-            <div class="panel-subtitle">Liste complète des élèves du ${getClassNameForCurrent()}.</div>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Élève</th><th>Identifiant</th><th>Dernier statut</th><th>Action rapide</th></tr></thead>
-            <tbody>
-              ${students.map(s => {
-                const last = lastAttendanceByStudent[s.login];
-                const statusText = last ? `${last.type} • ${last.status}` : 'Présent';
-                return `<tr>
-                  <td>${s.name}</td>
-                  <td>${s.login}</td>
-                  <td><span class="badge ${last ? badgeClassFromText(last.status) : 'green'}">${statusText}</span></td>
-                  <td><div class="actions-inline"><button class="light-btn" onclick="quickAttendance('${s.login}','Présent')">Présent</button><button class="light-btn" onclick="quickAttendance('${s.login}','Retard')">Retard</button><button class="danger-btn" onclick="quickAttendance('${s.login}','Absence')">Absence</button></div></td>
-                </tr>`;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function quickAttendance(studentLogin, type) {
-      if (currentUser.role !== 'prof') return;
-      state.attendance.push({
-        id: nextId('attendance'),
-        studentLogin,
-        type,
-        date: new Date().toISOString().slice(0, 10),
-        status: type === 'Présent' ? 'Présent' : 'Signalé',
-        reason: type === 'Présent' ? 'Présence confirmée' : type === 'Retard' ? 'Saisie rapide professeur' : 'Absence relevée par le professeur'
-      });
-      saveState();
-      renderCallsheet();
-      renderAttendance();
-      renderDashboard();
+      visibleAttendance().forEach(a => { if (!lastAttendanceByStudent[a.studentLogin]) lastAttendanceByStudent[a.studentLogin] = a; });
+      document.getElementById('view-callsheet').innerHTML = `<div class="panel-header"><div><h2 class="panel-title">Feuille d’appel</h2><div class="panel-subtitle">Liste complète des élèves du ${getClassNameForCurrent()}.</div></div></div><div class="table-wrap"><table><thead><tr><th>Élève</th><th>Identifiant</th><th>Dernier statut</th><th>Action rapide</th></tr></thead><tbody>${students.map(s => { const last = lastAttendanceByStudent[s.login]; const statusText = last ? `${last.type} • ${last.status}` : 'Présent'; return `<tr><td>${s.name}</td><td>${s.login}</td><td><span class="badge ${last ? badgeClassFromText(last.status) : 'green'}">${statusText}</span></td><td><div class="actions-inline"><button class="light-btn" onclick="quickAttendance('${s.login}','Présent')">Présent</button><button class="light-btn" onclick="quickAttendance('${s.login}','Retard')">Retard</button><button class="danger-btn" onclick="quickAttendance('${s.login}','Absence')">Absence</button></div></td></tr>`; }).join('')}</tbody></table></div>`;
     }
 
     function renderTeaching() {
@@ -1267,17 +699,11 @@
         return;
       }
       const students = getStudents().filter(s => s.className === getClassNameForCurrent());
-      const noteRows = visibleNotes().slice(0, 8);
-      const homeworkRows = visibleHomework().slice(0, 8);
-      const attendanceRows = visibleAttendance().slice(0, 8);
+      const noteRows = visibleNotes().slice(0,8);
+      const homeworkRows = visibleHomework().slice(0,8);
+      const attendanceRows = visibleAttendance().slice(0,8);
       document.getElementById('view-teaching').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Saisie pédagogique</h2>
-            <div class="panel-subtitle">Crée une évaluation pour toute la classe, puis saisis une note pour chaque élève.</div>
-          </div>
-        </div>
-
+        <div class="panel-header"><div><h2 class="panel-title">Saisie pédagogique</h2><div class="panel-subtitle">Crée une évaluation pour toute la classe, puis saisis une note pour chaque élève.</div></div></div>
         <div class="card-grid">
           <div class="small-card">
             <h3>Créer une évaluation pour tout le groupe</h3>
@@ -1288,20 +714,11 @@
               <div><label class="field-label">Sur</label><input class="field" id="evalOutOf" type="number" value="20" /></div>
               <div><label class="field-label">Coefficient</label><input class="field" id="evalCoef" type="number" value="1" /></div>
             </div>
-            <label class="field-label">Commentaire général</label>
-            <textarea class="textarea" id="evalComment" placeholder="Commentaire général sur l'évaluation"></textarea>
-            <div class="table-wrap" style="margin-top:12px;">
-              <table>
-                <thead><tr><th>Élève</th><th>Note</th></tr></thead>
-                <tbody>
-                  ${students.map(s => `<tr><td>${s.name}</td><td><input class="field" type="number" id="score_${s.login}" placeholder="/20" /></td></tr>`).join('')}
-                </tbody>
-              </table>
-            </div>
+            <label class="field-label">Commentaire général</label><textarea class="textarea" id="evalComment" placeholder="Commentaire général sur l'évaluation"></textarea>
+            <div class="table-wrap" style="margin-top:12px;"><table><thead><tr><th>Élève</th><th>Note</th></tr></thead><tbody>${students.map(s => `<tr><td>${s.name}</td><td><input class="field" type="number" id="score_${s.login}" placeholder="/20" /></td></tr>`).join('')}</tbody></table></div>
             <div class="actions-inline" style="margin-top:12px;"><button class="solid-btn" onclick="teacherCreateEvaluation()">Créer l'évaluation</button></div>
             <div class="notice" id="teacherNotice"></div>
           </div>
-
           <div class="small-card">
             <h3>Ajouter un devoir</h3>
             <div class="form-grid-2">
@@ -1310,11 +727,9 @@
               <div><label class="field-label">Matière</label><input class="field" id="hwSubject" value="${currentUser.subject}" /></div>
               <div><label class="field-label">Titre</label><input class="field" id="hwTitle" placeholder="Titre du travail" /></div>
             </div>
-            <label class="field-label">Détails</label>
-            <textarea class="textarea" id="hwDetails" placeholder="Consignes du devoir"></textarea>
+            <label class="field-label">Détails</label><textarea class="textarea" id="hwDetails" placeholder="Consignes du devoir"></textarea>
             <button class="solid-btn" onclick="teacherAddHomework()">Publier le devoir</button>
           </div>
-
           <div class="small-card">
             <h3>Ajouter une absence ou un retard</h3>
             <div class="form-grid-2">
@@ -1323,159 +738,23 @@
               <div><label class="field-label">Type</label><select class="select" id="attType"><option>Absence</option><option>Retard</option></select></div>
               <div><label class="field-label">Statut</label><select class="select" id="attStatus"><option>Signalé</option><option>Justifiée</option><option>Non justifiée</option></select></div>
             </div>
-            <label class="field-label">Motif</label>
-            <textarea class="textarea" id="attReason" placeholder="Motif ou précision"></textarea>
+            <label class="field-label">Motif</label><textarea class="textarea" id="attReason" placeholder="Motif ou précision"></textarea>
             <button class="solid-btn" onclick="teacherAddAttendance()">Enregistrer</button>
           </div>
-
           <div class="small-card">
             <h3>Ajout rapide d'annonce</h3>
             <div class="form-grid-2">
               <div><label class="field-label">Titre</label><input class="field" id="profAnnouncementTitle" placeholder="Titre" /></div>
               <div><label class="field-label">Audience</label><select class="select" id="profAnnouncementAudience"><option value="eleve,parent">eleve,parent</option><option value="eleve">eleve</option><option value="parent">parent</option><option value="prof,direction">prof,direction</option></select></div>
             </div>
-            <label class="field-label">Contenu</label>
-            <textarea class="textarea" id="profAnnouncementContent" placeholder="Contenu de l'annonce"></textarea>
+            <label class="field-label">Contenu</label><textarea class="textarea" id="profAnnouncementContent" placeholder="Contenu de l'annonce"></textarea>
             <button class="solid-btn" onclick="teacherAddAnnouncement()">Publier</button>
           </div>
         </div>
-
         <div class="card-grid" style="margin-top:18px;">
-          <div class="small-card">
-            <h3>Dernières notes saisies</h3>
-            <div class="section-list">
-              ${noteRows.map(n => `<div class="row-item"><div class="row-left"><strong>${studentName(n.studentLogin)} — ${n.evaluationTitle || n.subject}</strong><span>${n.date} • ${n.comment || 'Sans commentaire'}</span></div><div class="actions-inline"><span class="badge blue">${n.value}/${n.outOf}</span><button class="light-btn" onclick="editNotePrompt(${n.id})">Modifier</button></div></div>`).join('') || '<div class="empty-state">Aucune note.</div>'}
-            </div>
-          </div>
-          <div class="small-card">
-            <h3>Derniers devoirs et présences</h3>
-            <div class="section-list">
-              ${homeworkRows.map(h => `<div class="row-item"><div class="row-left"><strong>${h.subject} — ${h.title}</strong><span>${h.dueDate}</span></div><div class="badge orange">Devoir</div></div>`).join('')}
-              ${attendanceRows.map(a => `<div class="row-item"><div class="row-left"><strong>${studentName(a.studentLogin)} — ${a.type}</strong><span>${a.date} • ${a.reason}</span></div><div class="badge ${badgeClassFromText(a.status)}">${a.status}</div></div>`).join('')}
-              ${!homeworkRows.length && !attendanceRows.length ? '<div class="empty-state">Aucune saisie récente.</div>' : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function teacherCreateEvaluation() {
-      clearNotice('teacherNotice');
-      const students = getStudents().filter(s => s.className === getClassNameForCurrent());
-      const evaluationTitle = document.getElementById('evalTitle').value.trim();
-      const subject = document.getElementById('evalSubject').value.trim();
-      const date = document.getElementById('evalDate').value;
-      const outOf = Number(document.getElementById('evalOutOf').value);
-      const coefficient = Number(document.getElementById('evalCoef').value);
-      const comment = document.getElementById('evalComment').value.trim();
-
-      if (!evaluationTitle || !subject || !date || !outOf || !coefficient) {
-        showNotice('teacherNotice', 'error', 'Remplis les informations générales de l’évaluation.');
-        return;
-      }
-
-      let added = 0;
-      students.forEach(student => {
-        const input = document.getElementById('score_' + student.login);
-        const raw = input ? input.value.trim() : '';
-        if (raw === '') return;
-        const value = Number(raw);
-        if (Number.isNaN(value)) return;
-        state.notes.push({
-          id: nextId('notes'),
-          studentLogin: student.login,
-          evaluationTitle,
-          subject,
-          value,
-          outOf,
-          coefficient,
-          teacher: currentUser.name,
-          date,
-          comment
-        });
-        added += 1;
-      });
-
-      if (!added) {
-        showNotice('teacherNotice', 'error', 'Ajoute au moins une note dans le tableau.');
-        return;
-      }
-
-      saveState();
-      renderTeaching();
-      renderNotes();
-      renderDashboard();
-      showNotice('teacherNotice', 'success', 'Évaluation créée pour ' + added + ' élève(s).');
-    }
-
-    function editNotePrompt(id) {
-      if (!currentUser || currentUser.role !== 'prof') return;
-      const note = state.notes.find(n => n.id === id);
-      if (!note) return;
-      const newValue = prompt('Nouvelle note pour ' + studentName(note.studentLogin) + ' :', note.value);
-      if (newValue === null) return;
-      const parsed = Number(newValue);
-      if (Number.isNaN(parsed)) return;
-      const newComment = prompt('Nouveau commentaire :', note.comment || '') ?? note.comment;
-      note.value = parsed;
-      note.comment = newComment;
-      saveState();
-      renderTeaching();
-      renderNotes();
-      renderDashboard();
-    }
-
-    function deleteNote(id) {
-      if (!currentUser || currentUser.role !== 'prof') return;
-      state.notes = state.notes.filter(n => n.id !== id);
-      saveState();
-      renderTeaching();
-      renderNotes();
-      renderDashboard();
-    }
-
-    function teacherAddHomework() {
-      const className = document.getElementById('hwClass').value.trim();
-      const dueDate = document.getElementById('hwDueDate').value;
-      const subject = document.getElementById('hwSubject').value.trim();
-      const title = document.getElementById('hwTitle').value.trim();
-      const details = document.getElementById('hwDetails').value.trim();
-      if (!className || !dueDate || !subject || !title || !details) return;
-      const classStudents = state.users.filter(u => u.role === 'eleve' && u.className === className);
-      const statusByStudent = {};
-      classStudents.forEach(s => statusByStudent[s.login] = false);
-      state.homework.push({ id: nextId('homework'), className, subject, title, dueDate, details, givenBy: currentUser.name, statusByStudent });
-      saveState();
-      renderTeaching();
-      renderHomework();
-      renderDashboard();
-    }
-
-    function teacherAddAttendance() {
-      const studentLogin = document.getElementById('attStudent').value;
-      const date = document.getElementById('attDate').value;
-      const type = document.getElementById('attType').value;
-      const status = document.getElementById('attStatus').value;
-      const reason = document.getElementById('attReason').value.trim();
-      if (!studentLogin || !date || !type || !status || !reason) return;
-      state.attendance.push({ id: nextId('attendance'), studentLogin, type, date, status, reason });
-      saveState();
-      renderTeaching();
-      renderAttendance();
-      renderCallsheet();
-      renderDashboard();
-    }
-
-    function teacherAddAnnouncement() {
-      const title = document.getElementById('profAnnouncementTitle').value.trim();
-      const audience = document.getElementById('profAnnouncementAudience').value;
-      const content = document.getElementById('profAnnouncementContent').value.trim();
-      if (!title || !content) return;
-      state.announcements.push({ id: nextId('announcements'), title, audience, author: currentUser.name, date: new Date().toLocaleDateString('fr-FR'), content });
-      saveState();
-      renderTeaching();
-      renderAnnouncements();
-      renderDashboard();
+          <div class="small-card"><h3>Dernières notes saisies</h3><div class="section-list">${noteRows.map(n => `<div class="row-item"><div class="row-left"><strong>${studentName(n.studentLogin)} — ${n.evaluationTitle || n.subject}</strong><span>${n.date} • ${n.comment || 'Sans commentaire'}</span></div><div class="actions-inline"><span class="badge blue">${n.value}/${n.outOf}</span><button class="light-btn" onclick="editNotePrompt(${n.id})">Modifier</button></div></div>`).join('') || '<div class="empty-state">Aucune note.</div>'}</div></div>
+          <div class="small-card"><h3>Derniers devoirs et présences</h3><div class="section-list">${homeworkRows.map(h => `<div class="row-item"><div class="row-left"><strong>${h.subject} — ${h.title}</strong><span>${h.dueDate}</span></div><div class="badge orange">Devoir</div></div>`).join('')}${attendanceRows.map(a => `<div class="row-item"><div class="row-left"><strong>${studentName(a.studentLogin)} — ${a.type}</strong><span>${a.date} • ${a.reason}</span></div><div class="badge ${badgeClassFromText(a.status)}">${a.status}</div></div>`).join('')}${!homeworkRows.length && !attendanceRows.length ? '<div class="empty-state">Aucune saisie récente.</div>' : ''}</div></div>
+        </div>`;
     }
 
     function renderManagement() {
@@ -1484,13 +763,7 @@
         return;
       }
       document.getElementById('view-management').innerHTML = `
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title">Gestion direction</h2>
-            <div class="panel-subtitle">Administration complète des utilisateurs, documents, annonces et emploi du temps.</div>
-          </div>
-        </div>
-
+        <div class="panel-header"><div><h2 class="panel-title">Gestion direction</h2><div class="panel-subtitle">Administration complète.</div></div></div>
         <div class="card-grid">
           <div class="small-card">
             <h3>Ajouter un utilisateur</h3>
@@ -1504,82 +777,121 @@
             <button class="solid-btn" onclick="addUser()">Ajouter l'utilisateur</button>
             <div class="notice" id="managementNotice"></div>
           </div>
-
           <div class="small-card">
             <h3>Ajouter une annonce</h3>
-            <div class="form-grid-2">
-              <div><label class="field-label">Titre</label><input class="field" id="newAnnouncementTitle" placeholder="Titre de l'annonce" /></div>
-              <div><label class="field-label">Audience</label><select class="select" id="newAnnouncementAudience"><option value="all">all</option><option value="eleve,parent">eleve,parent</option><option value="prof,direction">prof,direction</option><option value="eleve">eleve</option><option value="parent">parent</option><option value="prof">prof</option><option value="direction">direction</option></select></div>
-            </div>
-            <label class="field-label">Contenu</label>
-            <textarea class="textarea" id="newAnnouncementContent" placeholder="Contenu de l'annonce"></textarea>
+            <div class="form-grid-2"><div><label class="field-label">Titre</label><input class="field" id="newAnnouncementTitle" placeholder="Titre de l'annonce" /></div><div><label class="field-label">Audience</label><select class="select" id="newAnnouncementAudience"><option value="all">all</option><option value="eleve,parent">eleve,parent</option><option value="prof,direction">prof,direction</option><option value="eleve">eleve</option><option value="parent">parent</option><option value="prof">prof</option><option value="direction">direction</option></select></div></div>
+            <label class="field-label">Contenu</label><textarea class="textarea" id="newAnnouncementContent" placeholder="Contenu de l'annonce"></textarea>
             <button class="solid-btn" onclick="addAnnouncement()">Publier l'annonce</button>
           </div>
-
           <div class="small-card">
             <h3>Ajouter un document</h3>
-            <div class="form-grid-2">
-              <div><label class="field-label">Titre</label><input class="field" id="newDocTitle" placeholder="Titre du document" /></div>
-              <div><label class="field-label">Catégorie</label><input class="field" id="newDocCategory" placeholder="Administration / Bulletin..." /></div>
-              <div><label class="field-label">Audience</label><select class="select" id="newDocAudience"><option value="all">all</option><option value="eleve,parent">eleve,parent</option><option value="prof,direction">prof,direction</option><option value="eleve">eleve</option><option value="parent">parent</option><option value="prof">prof</option><option value="direction">direction</option></select></div>
-            </div>
-            <label class="field-label">Description</label>
-            <textarea class="textarea" id="newDocDetails" placeholder="Description du document"></textarea>
+            <div class="form-grid-2"><div><label class="field-label">Titre</label><input class="field" id="newDocTitle" placeholder="Titre du document" /></div><div><label class="field-label">Catégorie</label><input class="field" id="newDocCategory" placeholder="Administration / Bulletin..." /></div><div><label class="field-label">Audience</label><select class="select" id="newDocAudience"><option value="all">all</option><option value="eleve,parent">eleve,parent</option><option value="prof,direction">prof,direction</option><option value="eleve">eleve</option><option value="parent">parent</option><option value="prof">prof</option><option value="direction">direction</option></select></div></div>
+            <label class="field-label">Description</label><textarea class="textarea" id="newDocDetails" placeholder="Description du document"></textarea>
             <button class="solid-btn" onclick="addDocument()">Ajouter le document</button>
           </div>
-
           <div class="small-card">
             <h3>Ajouter un créneau d'emploi du temps</h3>
-            <div class="form-grid-3">
-              <div><label class="field-label">Classe</label><input class="field" id="newScheduleClass" value="Groupe SAHRAOUI" /></div>
-              <div><label class="field-label">Jour</label><input class="field" id="newScheduleDay" placeholder="Lundi" /></div>
-              <div><label class="field-label">Salle</label><input class="field" id="newScheduleRoom" placeholder="Salle 1" /></div>
-              <div><label class="field-label">Début</label><input class="field" id="newScheduleStart" placeholder="17:15" /></div>
-              <div><label class="field-label">Fin</label><input class="field" id="newScheduleEnd" placeholder="18:00" /></div>
-              <div><label class="field-label">Professeur</label><input class="field" id="newScheduleTeacher" placeholder="M. SAHRAOUI" /></div>
-            </div>
+            <div class="form-grid-3"><div><label class="field-label">Classe</label><input class="field" id="newScheduleClass" value="Groupe SAHRAOUI" /></div><div><label class="field-label">Jour</label><input class="field" id="newScheduleDay" placeholder="Lundi" /></div><div><label class="field-label">Salle</label><input class="field" id="newScheduleRoom" placeholder="Salle 1" /></div><div><label class="field-label">Début</label><input class="field" id="newScheduleStart" placeholder="17:15" /></div><div><label class="field-label">Fin</label><input class="field" id="newScheduleEnd" placeholder="18:00" /></div><div><label class="field-label">Professeur</label><input class="field" id="newScheduleTeacher" placeholder="M. SAHRAOUI" /></div></div>
             <label class="field-label">Matière</label><input class="field" id="newScheduleSubject" placeholder="Matière" />
             <div class="actions-inline" style="margin-top:12px;"><button class="solid-btn" onclick="addScheduleRow()">Ajouter le créneau</button></div>
           </div>
         </div>
-
         <div class="card-grid" style="margin-top:18px;">
-          <div class="small-card">
-            <h3>Comptes existants</h3>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Nom</th><th>Rôle</th><th>Identifiant</th><th>Action</th></tr></thead>
-                <tbody>
-                  ${state.users.map(u => `<tr><td>${u.name}</td><td>${roleLabel(u.role)}</td><td>${u.login}</td><td>${u.login === 'direction' ? '<span class="badge orange">Protégé</span>' : `<button class="danger-btn" onclick="deleteUser(${u.id})">Supprimer / annuler</button>`}</td></tr>`).join('')}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="small-card">
-            <h3>Annonces</h3>
-            <div class="section-list">
-              ${state.announcements.slice().sort((a,b) => b.id - a.id).map(a => `<div class="row-item"><div class="row-left"><strong>${a.title}</strong><span>${a.date} • ${a.audience}</span></div><button class="danger-btn" onclick="deleteAnnouncement(${a.id})">Supprimer</button></div>`).join('') || '<div class="empty-state">Aucune annonce.</div>'}
-            </div>
-          </div>
-
-          <div class="small-card">
-            <h3>Documents</h3>
-            <div class="section-list">
-              ${state.documents.slice().sort((a,b) => b.id - a.id).map(d => `<div class="row-item"><div class="row-left"><strong>${d.title}</strong><span>${d.date} • ${d.category}</span></div><button class="danger-btn" onclick="deleteDocument(${d.id})">Supprimer</button></div>`).join('') || '<div class="empty-state">Aucun document.</div>'}
-            </div>
-          </div>
-
-          <div class="small-card">
-            <h3>Emploi du temps</h3>
-            <div class="section-list">
-              ${state.schedule.slice().sort((a,b) => a.id - b.id).map(s => `<div class="row-item"><div class="row-left"><strong>${s.day} • ${s.start}-${s.end}</strong><span>${s.className} • ${s.cancelled ? 'Cours annulé' : s.subject}</span></div><div class="actions-inline"><button class="light-btn" onclick="toggleCourseCancellation(${s.id})">${s.cancelled ? 'Remettre le cours' : 'Annuler le cours'}</button><button class="danger-btn" onclick="deleteScheduleRow(${s.id})">Supprimer</button></div></div>`).join('') || '<div class="empty-state">Aucun créneau.</div>'}
-            </div>
-          </div>
-        </div>
-      `;
+          <div class="small-card"><h3>Comptes existants</h3><div class="table-wrap"><table><thead><tr><th>Nom</th><th>Rôle</th><th>Identifiant</th><th>Action</th></tr></thead><tbody>${state.users.map(u => `<tr><td>${u.name}</td><td>${roleLabel(u.role)}</td><td>${u.login}</td><td>${u.login === 'direction' ? '<span class="badge orange">Protégé</span>' : `<button class="danger-btn" onclick="deleteUser(${u.id})">Supprimer / annuler</button>`}</td></tr>`).join('')}</tbody></table></div></div>
+          <div class="small-card"><h3>Annonces</h3><div class="section-list">${state.announcements.slice().sort((a,b) => b.id - a.id).map(a => `<div class="row-item"><div class="row-left"><strong>${a.title}</strong><span>${a.date} • ${a.audience}</span></div><button class="danger-btn" onclick="deleteAnnouncement(${a.id})">Supprimer</button></div>`).join('') || '<div class="empty-state">Aucune annonce.</div>'}</div></div>
+          <div class="small-card"><h3>Documents</h3><div class="section-list">${state.documents.slice().sort((a,b) => b.id - a.id).map(d => `<div class="row-item"><div class="row-left"><strong>${d.title}</strong><span>${d.date} • ${d.category}</span></div><button class="danger-btn" onclick="deleteDocument(${d.id})">Supprimer</button></div>`).join('') || '<div class="empty-state">Aucun document.</div>'}</div></div>
+          <div class="small-card"><h3>Emploi du temps</h3><div class="section-list">${state.schedule.slice().sort((a,b) => a.id - b.id).map(s => `<div class="row-item"><div class="row-left"><strong>${s.day} • ${s.start}-${s.end}</strong><span>${s.className} • ${s.cancelled ? 'Cours annulé' : s.subject}</span></div><div class="actions-inline"><button class="light-btn" onclick="toggleCourseCancellation(${s.id})">${s.cancelled ? 'Remettre le cours' : 'Annuler le cours'}</button><button class="danger-btn" onclick="deleteScheduleRow(${s.id})">Supprimer</button></div></div>`).join('') || '<div class="empty-state">Aucun créneau.</div>'}</div></div>
+        </div>`;
     }
 
+    function resetState() { state = deepCopy(DEFAULT_STATE); saveState(); if (currentUser) renderAllViews(); }
+    function toggleHomeworkStatus(id) {
+      if (!currentUser || currentUser.role !== 'eleve') return;
+      const hw = state.homework.find(h => h.id === id); if (!hw) return;
+      hw.statusByStudent = hw.statusByStudent || {}; hw.statusByStudent[currentUser.login] = !hw.statusByStudent[currentUser.login];
+      saveState(); renderHomework(); renderDashboard();
+    }
+    function sendMessage() {
+      clearNotice('messageNotice');
+      const toRole = document.getElementById('msgToRole').value;
+      const subject = document.getElementById('msgSubject').value.trim();
+      const body = document.getElementById('msgBody').value.trim();
+      if (!subject || !body) { showNotice('messageNotice', 'error', 'Remplis le sujet et le message.'); return; }
+      state.messages.push({ id: nextId('messages'), fromRole: currentUser.role, fromLogin: currentUser.login, fromName: currentUser.name, toRole, toLogin: receiverLoginForRole(toRole), toName: receiverNameForRole(toRole), subject, body, date: new Date().toLocaleString('fr-FR') });
+      saveState(); renderMessages(); renderDashboard(); showNotice('messageNotice', 'success', 'Message envoyé.');
+    }
+    function quickAttendance(studentLogin, type) {
+      if (currentUser.role !== 'prof') return;
+      state.attendance.push({ id: nextId('attendance'), studentLogin, type, date: new Date().toISOString().slice(0, 10), status: type === 'Présent' ? 'Présent' : 'Signalé', reason: type === 'Présent' ? 'Présence confirmée' : type === 'Retard' ? 'Saisie rapide professeur' : 'Absence relevée par le professeur' });
+      saveState(); renderCallsheet(); renderAttendance(); renderDashboard();
+    }
+    function teacherCreateEvaluation() {
+      clearNotice('teacherNotice');
+      const students = getStudents().filter(s => s.className === getClassNameForCurrent());
+      const evaluationTitle = document.getElementById('evalTitle').value.trim();
+      const subject = document.getElementById('evalSubject').value.trim();
+      const date = document.getElementById('evalDate').value;
+      const outOf = Number(document.getElementById('evalOutOf').value);
+      const coefficient = Number(document.getElementById('evalCoef').value);
+      const comment = document.getElementById('evalComment').value.trim();
+      if (!evaluationTitle || !subject || !date || !outOf || !coefficient) { showNotice('teacherNotice', 'error', 'Remplis les informations générales de l’évaluation.'); return; }
+      let added = 0;
+      students.forEach(student => {
+        const raw = document.getElementById('score_' + student.login).value.trim();
+        if (raw === '') return;
+        const value = Number(raw);
+        if (Number.isNaN(value)) return;
+        state.notes.push({ id: nextId('notes'), studentLogin: student.login, evaluationTitle, subject, value, outOf, coefficient, teacher: currentUser.name, date, comment });
+        added += 1;
+      });
+      if (!added) { showNotice('teacherNotice', 'error', 'Ajoute au moins une note.'); return; }
+      saveState(); renderTeaching(); renderNotes(); renderDashboard(); showNotice('teacherNotice', 'success', 'Évaluation créée pour ' + added + ' élève(s).');
+    }
+    function editNotePrompt(id) {
+      if (!currentUser || currentUser.role !== 'prof') return;
+      const note = state.notes.find(n => n.id === id); if (!note) return;
+      const newValue = prompt('Nouvelle note pour ' + studentName(note.studentLogin) + ' :', note.value);
+      if (newValue === null) return;
+      const parsed = Number(newValue); if (Number.isNaN(parsed)) return;
+      const newComment = prompt('Nouveau commentaire :', note.comment || '') ?? note.comment;
+      note.value = parsed; note.comment = newComment;
+      saveState(); renderTeaching(); renderNotes(); renderDashboard();
+    }
+    function deleteNote(id) {
+      if (!currentUser || currentUser.role !== 'prof') return;
+      state.notes = state.notes.filter(n => n.id !== id);
+      saveState(); renderTeaching(); renderNotes(); renderDashboard();
+    }
+    function teacherAddHomework() {
+      const className = document.getElementById('hwClass').value.trim();
+      const dueDate = document.getElementById('hwDueDate').value;
+      const subject = document.getElementById('hwSubject').value.trim();
+      const title = document.getElementById('hwTitle').value.trim();
+      const details = document.getElementById('hwDetails').value.trim();
+      if (!className || !dueDate || !subject || !title || !details) return;
+      const classStudents = state.users.filter(u => u.role === 'eleve' && u.className === className);
+      const statusByStudent = {}; classStudents.forEach(s => statusByStudent[s.login] = false);
+      state.homework.push({ id: nextId('homework'), className, subject, title, dueDate, details, givenBy: currentUser.name, statusByStudent });
+      saveState(); renderTeaching(); renderHomework(); renderDashboard();
+    }
+    function teacherAddAttendance() {
+      const studentLogin = document.getElementById('attStudent').value;
+      const date = document.getElementById('attDate').value;
+      const type = document.getElementById('attType').value;
+      const status = document.getElementById('attStatus').value;
+      const reason = document.getElementById('attReason').value.trim();
+      if (!studentLogin || !date || !type || !status || !reason) return;
+      state.attendance.push({ id: nextId('attendance'), studentLogin, type, date, status, reason });
+      saveState(); renderTeaching(); renderAttendance(); renderCallsheet(); renderDashboard();
+    }
+    function teacherAddAnnouncement() {
+      const title = document.getElementById('profAnnouncementTitle').value.trim();
+      const audience = document.getElementById('profAnnouncementAudience').value;
+      const content = document.getElementById('profAnnouncementContent').value.trim();
+      if (!title || !content) return;
+      state.announcements.push({ id: nextId('announcements'), title, audience, author: currentUser.name, date: new Date().toLocaleDateString('fr-FR'), content });
+      saveState(); renderTeaching(); renderAnnouncements(); renderDashboard();
+    }
     function addUser() {
       clearNotice('managementNotice');
       const role = document.getElementById('newUserRole').value;
@@ -1587,138 +899,25 @@
       const login = document.getElementById('newUserLogin').value.trim().toLowerCase();
       const password = document.getElementById('newUserPassword').value.trim();
       const extra = document.getElementById('newUserExtra').value.trim();
-      if (!name || !login || !password) {
-        showNotice('managementNotice', 'error', 'Remplis le nom, l’identifiant et le mot de passe.');
-        return;
-      }
-      if (state.users.some(u => u.login.toLowerCase() === login)) {
-        showNotice('managementNotice', 'error', 'Cet identifiant existe déjà.');
-        return;
-      }
+      if (!name || !login || !password) { showNotice('managementNotice', 'error', 'Remplis le nom, l’identifiant et le mot de passe.'); return; }
+      if (state.users.some(u => u.login.toLowerCase() === login)) { showNotice('managementNotice', 'error', 'Cet identifiant existe déjà.'); return; }
       const user = { id: nextId('users'), role, login, password, name };
       if (role === 'eleve') user.className = extra || 'Groupe SAHRAOUI';
       if (role === 'parent') user.linkedStudentLogin = extra || 'isaac';
-      if (role === 'prof') {
-        user.subject = extra || 'Matière';
-        user.className = 'Groupe SAHRAOUI';
-      }
-      state.users.push(user);
-      saveState();
-      renderManagement();
-      refreshGlobalStats();
-      showNotice('managementNotice', 'success', 'Utilisateur ajouté avec succès.');
+      if (role === 'prof') { user.subject = extra || 'Matière'; user.className = 'Groupe SAHRAOUI'; }
+      state.users.push(user); saveState(); renderManagement(); refreshGlobalStats(); showNotice('managementNotice', 'success', 'Utilisateur ajouté avec succès.');
     }
-
-    function deleteUser(id) {
-      const user = state.users.find(u => u.id === id);
-      if (!user || user.login === 'direction') return;
-      state.users = state.users.filter(u => u.id !== id);
-      saveState();
-      renderManagement();
-      refreshGlobalStats();
-    }
-
-    function addAnnouncement() {
-      const title = document.getElementById('newAnnouncementTitle').value.trim();
-      const audience = document.getElementById('newAnnouncementAudience').value;
-      const content = document.getElementById('newAnnouncementContent').value.trim();
-      if (!title || !content) return;
-      state.announcements.push({ id: nextId('announcements'), title, audience, author: currentUser.name, date: new Date().toLocaleDateString('fr-FR'), content });
-      saveState();
-      renderManagement();
-      renderAnnouncements();
-      renderDashboard();
-    }
-
-    function deleteAnnouncement(id) {
-      state.announcements = state.announcements.filter(a => a.id !== id);
-      saveState();
-      renderManagement();
-      renderAnnouncements();
-      renderDashboard();
-    }
-
-    function addDocument() {
-      const title = document.getElementById('newDocTitle').value.trim();
-      const category = document.getElementById('newDocCategory').value.trim();
-      const audience = document.getElementById('newDocAudience').value;
-      const details = document.getElementById('newDocDetails').value.trim();
-      if (!title || !category || !details) return;
-      state.documents.push({ id: nextId('documents'), title, category, audience, uploadedBy: currentUser.name, date: new Date().toLocaleDateString('fr-FR'), details });
-      saveState();
-      renderManagement();
-      renderDocuments();
-      renderDashboard();
-    }
-
-    function deleteDocument(id) {
-      state.documents = state.documents.filter(d => d.id !== id);
-      saveState();
-      renderManagement();
-      renderDocuments();
-      renderDashboard();
-    }
-
-    function addScheduleRow() {
-      const className = document.getElementById('newScheduleClass').value.trim();
-      const day = document.getElementById('newScheduleDay').value.trim();
-      const room = document.getElementById('newScheduleRoom').value.trim();
-      const start = document.getElementById('newScheduleStart').value.trim();
-      const end = document.getElementById('newScheduleEnd').value.trim();
-      const teacher = document.getElementById('newScheduleTeacher').value.trim();
-      const subject = document.getElementById('newScheduleSubject').value.trim();
-      if (!className || !day || !room || !start || !end || !teacher || !subject) return;
-      state.schedule.push({ id: nextId('schedule'), className, day, room, start, end, teacher, subject, cancelled: false });
-      saveState();
-      renderManagement();
-      renderSchedule();
-      renderDashboard();
-    }
-
-    function deleteScheduleRow(id) {
-      state.schedule = state.schedule.filter(s => s.id !== id);
-      saveState();
-      renderManagement();
-      renderSchedule();
-      renderDashboard();
-    }
-
-    function toggleCourseCancellation(id) {
-      const course = state.schedule.find(s => s.id === id);
-      if (!course) return;
-      course.cancelled = !course.cancelled;
-      saveState();
-      renderManagement();
-      renderSchedule();
-      renderDashboard();
-    }
-
-    function studentName(login) {
-      const student = getStudentByLogin(login);
-      return student ? student.name : login;
-    }
-
-    function refreshGlobalStats() {
-      document.getElementById('statStudents').textContent = state.users.filter(u => u.role === 'eleve').length;
-      document.getElementById('statParents').textContent = state.users.filter(u => u.role === 'parent').length;
-      document.getElementById('statTeachers').textContent = state.users.filter(u => u.role === 'prof').length;
-      document.getElementById('statMessages').textContent = state.messages.length;
-      document.getElementById('statHomework').textContent = state.homework.length;
-      document.getElementById('statDocs').textContent = state.documents.length;
-    }
+    function deleteUser(id) { const user = state.users.find(u => u.id === id); if (!user || user.login === 'direction') return; state.users = state.users.filter(u => u.id !== id); saveState(); renderManagement(); refreshGlobalStats(); }
+    function addAnnouncement() { const title = document.getElementById('newAnnouncementTitle').value.trim(); const audience = document.getElementById('newAnnouncementAudience').value; const content = document.getElementById('newAnnouncementContent').value.trim(); if (!title || !content) return; state.announcements.push({ id: nextId('announcements'), title, audience, author: currentUser.name, date: new Date().toLocaleDateString('fr-FR'), content }); saveState(); renderManagement(); renderAnnouncements(); renderDashboard(); }
+    function deleteAnnouncement(id) { state.announcements = state.announcements.filter(a => a.id !== id); saveState(); renderManagement(); renderAnnouncements(); renderDashboard(); }
+    function addDocument() { const title = document.getElementById('newDocTitle').value.trim(); const category = document.getElementById('newDocCategory').value.trim(); const audience = document.getElementById('newDocAudience').value; const details = document.getElementById('newDocDetails').value.trim(); if (!title || !category || !details) return; state.documents.push({ id: nextId('documents'), title, category, audience, uploadedBy: currentUser.name, date: new Date().toLocaleDateString('fr-FR'), details }); saveState(); renderManagement(); renderDocuments(); renderDashboard(); }
+    function deleteDocument(id) { state.documents = state.documents.filter(d => d.id !== id); saveState(); renderManagement(); renderDocuments(); renderDashboard(); }
+    function addScheduleRow() { const className = document.getElementById('newScheduleClass').value.trim(); const day = document.getElementById('newScheduleDay').value.trim(); const room = document.getElementById('newScheduleRoom').value.trim(); const start = document.getElementById('newScheduleStart').value.trim(); const end = document.getElementById('newScheduleEnd').value.trim(); const teacher = document.getElementById('newScheduleTeacher').value.trim(); const subject = document.getElementById('newScheduleSubject').value.trim(); if (!className || !day || !room || !start || !end || !teacher || !subject) return; state.schedule.push({ id: nextId('schedule'), className, day, room, start, end, teacher, subject, cancelled:false }); saveState(); renderManagement(); renderSchedule(); renderDashboard(); }
+    function deleteScheduleRow(id) { state.schedule = state.schedule.filter(s => s.id !== id); saveState(); renderManagement(); renderSchedule(); renderDashboard(); }
+    function toggleCourseCancellation(id) { const course = state.schedule.find(s => s.id === id); if (!course) return; course.cancelled = !course.cancelled; saveState(); renderManagement(); renderSchedule(); renderDashboard(); }
 
     function renderAllViews() {
-      renderDashboard();
-      renderNotes();
-      renderSchedule();
-      renderHomework();
-      renderAttendance();
-      renderMessages();
-      renderDocuments();
-      renderAnnouncements();
-      renderCallsheet();
-      renderTeaching();
-      renderManagement();
+      renderDashboard(); renderNotes(); renderSchedule(); renderHomework(); renderAttendance(); renderMessages(); renderDocuments(); renderAnnouncements(); renderCallsheet(); renderTeaching(); renderManagement();
     }
 
     selectRole('eleve');
@@ -1727,8 +926,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
