@@ -288,7 +288,7 @@
   <script>
     const STORAGE_KEY = 'koalaSchoolFinalBackup';
     const FIREBASE_PATH = 'schoolState';
-    const STORAGE_VERSION = 5;
+    const STORAGE_VERSION = 6;
 
     const firebaseConfig = {
       apiKey: 'AIzaSyAp2gHq6sX_DnlUSwZ2JoyCf_e6gxxJKU4',
@@ -303,6 +303,7 @@
 
     const DEFAULT_STATE = {
       __version: STORAGE_VERSION,
+      updatedAt: 0,
       users: [
         { id:1, role:'eleve', login:'isaac', password:'1234', name:'Isaac', className:'Groupe SAHRAOUI' },
         { id:2, role:'eleve', login:'souleymane', password:'1234', name:'Souleymane', className:'Groupe SAHRAOUI' },
@@ -361,7 +362,17 @@
         if (remote[key] !== undefined) merged[key] = remote[key];
       });
       merged.__version = STORAGE_VERSION;
+      merged.updatedAt = Number(merged.updatedAt || 0);
       return merged;
+    }
+    function markStateUpdated() {
+      state.__version = STORAGE_VERSION;
+      state.updatedAt = Date.now();
+    }
+    function chooseNewestState(localState, remoteState) {
+      const localSafe = sanitizeRemoteState(localState);
+      const remoteSafe = sanitizeRemoteState(remoteState);
+      return Number(localSafe.updatedAt || 0) >= Number(remoteSafe.updatedAt || 0) ? localSafe : remoteSafe;
     }
     function showNotice(id, type, text) {
       const el = document.getElementById(id);
@@ -476,10 +487,17 @@
         firebaseEnabled = true;
         const ref = firebase.database().ref(FIREBASE_PATH);
         ref.once('value').then(snapshot => {
+          const localState = loadLocalState();
           if (snapshot.exists()) {
-            state = sanitizeRemoteState(snapshot.val());
+            const remoteState = snapshot.val();
+            state = chooseNewestState(localState, remoteState);
             saveLocalState();
+            if (JSON.stringify(state) !== JSON.stringify(sanitizeRemoteState(remoteState))) {
+              syncing = true;
+              ref.set(state).finally(() => syncing = false);
+            }
           } else {
+            state = sanitizeRemoteState(localState);
             saveLocalState();
             syncing = true;
             ref.set(state).finally(() => syncing = false);
@@ -499,7 +517,14 @@
         ref.on('value', snapshot => {
           if (!firebaseReady || syncing) return;
           if (!snapshot.exists()) return;
-          state = sanitizeRemoteState(snapshot.val());
+          const remoteState = sanitizeRemoteState(snapshot.val());
+          const localState = loadLocalState();
+          const chosen = chooseNewestState(localState, remoteState);
+          if (Number(remoteState.updatedAt || 0) < Number(chosen.updatedAt || 0)) {
+            syncing = true;
+            ref.set(chosen).finally(() => syncing = false);
+          }
+          state = chosen;
           saveLocalState();
           refreshGlobalStats();
           if (currentUser) {
@@ -519,7 +544,7 @@
     }
 
     function saveState() {
-      state.__version = STORAGE_VERSION;
+      markStateUpdated();
       saveLocalState();
       refreshGlobalStats();
       if (firebaseEnabled && firebaseReady) {
